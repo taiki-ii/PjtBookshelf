@@ -1,6 +1,6 @@
 package com.example.bookshelfapp.controller;
 
-public class LoginController {
+public class UserController {
 	// loginブランチ作成用
 
 }
