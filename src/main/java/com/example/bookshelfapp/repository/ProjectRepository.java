@@ -1,5 +1,11 @@
 package com.example.bookshelfapp.repository;
 
-public class ProjectRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.bookshelfapp.entity.Project;
+
+public interface ProjectRepository extends JpaRepository<Project, Integer> {
+	
+	
 
 }
