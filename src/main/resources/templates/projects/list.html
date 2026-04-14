@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>プロジェクト一覧</title>
+</head>
+<body>
+	<h1>プロジェクト一覧<h1>
+	
+	<table border="1">
+		<thead>
+			<tr>
+				<th>No</th>
+				<th>プロジェクト名</th>
+				<th>ステータス</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="project : ${projectList}">
+				<td th:text="${project.id}"></td>
+				<td th:text="${project.projectName}"></td>
+				<td th:text="${project.status}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
