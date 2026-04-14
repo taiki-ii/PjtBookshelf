@@ -17,7 +17,7 @@
 -小さな探しものが増えて、時間を消費してしまうことがよくありませんか？（私はよくあります・・・））</br>
 
 #   デモ
-作成初期のため変更予定</br>
+開発工程が初期のため変更予定</br>
 <img width="1307" height="726" alt="image" src="https://github.com/user-attachments/assets/6eb9c046-0b08-47e1-9861-5af812c8d685" /></br>
 
 #   機能
