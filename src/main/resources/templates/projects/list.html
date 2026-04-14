@@ -6,6 +6,19 @@
 </head>
 <body>
 	<h1>プロジェクト一覧<h1>
+		
+	<h2>新規作成</h2>
+	<form th:action="@{/create-new\project}" th:object="${projectCreateForm}" method="post">
+		<div>
+			<label for="projectName">プロジェクト名</label>
+			<input type="text" id="projectName" th:field="*{projectName}">	
+		</div>
+		<div th:if="${#fields.hasErrors('projectName')}" th:errors="*{projectName}" style="color:red;"></div>
+		
+		<button type="submit">作成</button>
+	</form>
+	
+	<hr>
 	
 	<table border="1">
 		<thead>
