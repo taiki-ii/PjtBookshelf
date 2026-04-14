@@ -63,20 +63,16 @@
 ・GitHub</br>
 ・Git Bash</br>
 
-#  設計書
-■要件定義・基本設計</br>
-・https://docs.google.com/document/d/11iaAP4CJsJqcMqYDkEpKAKLBhdLSXb_GQ19BUWap_4s/edit?tab=t.y6iuoxxfk2v5</br>
-■詳細設計</br>
-・https://docs.google.com/document/d/1W736eUJ3RhYMvjz5zZj4eQr7HJn5NIu9dgux4nva10M/edit?tab=t.vw2bs64dp2mv#heading=h.yh4357kffxdv</br>
+#  設計書（一部）
 ■ER図</br>
 ・https://app.diagrams.net/#G1lh26dafQp4RwgSbra5ZTVXU-e6va-aCy#%7B%22pageId%22%3A%22jZxMWtN0JPOmvQeu4f5b%22%7D</br>
 ■テーブル定義書</br>
 ・https://docs.google.com/spreadsheets/d/1hcQhLyHCvk7ZvLphgSyYF3jMNgkptpbKWW9xXqe5F4Y/edit?gid=0#gid=0</br>
 ■課題管理</br>
 ・https://www.mindmeister.com/app/map/3980647856</br>
-■画面遷移図
+■画面遷移図</br>
 ・https://app.diagrams.net/#G1kYfWyrr176DPfmahQCZQEGerLofbDdae#%7B%22pageId%22%3A%224kWee0NgG-hdlYYy_Oyv%22%7D
-■ブランチ図
+■ブランチ図</br>
 ・https://app.diagrams.net/#G1vIYoTxpJ9hO-6dG8h3xN8I7WH-W0Es0Y#%7B%22pageId%22%3A%22pqw0TAvFSBKQbNu8ExS5%22%7D
 
 
