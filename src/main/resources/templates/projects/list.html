@@ -5,36 +5,77 @@
 <title>プロジェクト一覧</title>
 </head>
 <body>
-	<h1>プロジェクト一覧<h1>
-		
-	<h2>新規作成</h2>
-	<form th:action="@{/create-new-project}" th:object="${projectCreateForm}" method="post">
-		<div>
-			<label for="projectName">プロジェクト名</label>
-			<input type="text" id="projectName" th:field="*{projectName}">	
-		</div>
-		<div th:if="${#fields.hasErrors('projectName')}" th:errors="*{projectName}" style="color:red;"></div>
-		
-		<button type="submit">作成</button>
-	</form>
-	
-	<hr>
-	
-	<table border="1">
-		<thead>
-			<tr>
-				<th>No</th>
-				<th>プロジェクト名</th>
-				<th>ステータス</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="project : ${projectList}">
-				<td th:text="${project.id}"></td>
-				<td th:text="${project.projectName}"></td>
-				<td th:text="${project.status}"></td>
-			</tr>
-		</tbody>
-	</table>
+    <h1>プロジェクト一覧</h1>
+
+    <h2>新規作成</h2>
+    <form th:action="@{/create-new-project}" th:object="${projectCreateForm}" method="post">
+        <div>
+            <label for="createProjectName">プロジェクト名</label>
+            <input type="text" id="createProjectName" th:field="*{projectName}">
+        </div>
+        <div th:if="${#fields.hasErrors('projectName')}" th:errors="*{projectName}" style="color:red;"></div>
+
+        <button type="submit">作成</button>
+    </form>
+
+    <h2>編集</h2>
+
+    <div th:if="${projectEditForm.id == null}">
+        <p>一覧の「編集」ボタンを押すと、ここに編集内容が表示されます。</p>
+    </div>
+
+    <form th:if="${projectEditForm.id != null}"
+          th:action="@{/project-update}"
+          th:object="${projectEditForm}"
+          method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <div>
+            <label for="editProjectName">プロジェクト名：</label>
+            <input type="text" id="editProjectName" th:field="*{projectName}">
+            <div th:if="${#fields.hasErrors('projectName')}" th:errors="*{projectName}" style="color:red"></div>
+        </div>
+
+        <div>
+            <label for="editStatus">ステータス：</label>
+            <select id="editStatus" th:field="*{status}">
+                <option value="">選択してください</option>
+                <option value="未着手">未着手</option>
+                <option value="進行中">進行中</option>
+                <option value="完了">完了</option>
+            </select>
+            <div th:if="${#fields.hasErrors('status')}" th:errors="*{status}" style="color:red"></div>
+        </div>
+
+        <div>
+            <button type="submit">更新</button>
+        </div>
+    </form>
+
+    <hr>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>プロジェクト名</th>
+                <th>ステータス</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="project : ${projectList}">
+                <td th:text="${project.id}"></td>
+                <td th:text="${project.projectName}"></td>
+                <td th:text="${project.status}"></td>
+                <td>
+                    <form th:action="@{/project-update}" method="get">
+                        <input type="hidden" name="projectId" th:value="${project.id}">
+                        <button type="submit">編集</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>
