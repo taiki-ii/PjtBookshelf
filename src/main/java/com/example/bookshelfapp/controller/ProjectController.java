@@ -35,6 +35,10 @@ public class ProjectController {
 		return "projects/list";
 	}
 	
+    /**
+     * 作成ボタン押下時
+     * 
+     */
 	@PostMapping("/create-new-project")
 	public String registNewProject(
 			@Valid @ModelAttribute("projectCreateForm") ProjectCreateForm form,
@@ -42,8 +46,9 @@ public class ProjectController {
 			Model model) {
 		
 		if(bindingResult.hasErrors()) {
+			model.addAttribute("projectList", projectService.getProjectList());
+			model.addAttribute("projectEditForm", new ProjectEditForm());
 			return "projects/list";
-			
 		}
 		
 		projectService.createProject(form);
@@ -56,9 +61,9 @@ public class ProjectController {
      * formクラス、Modelの順で値を詰め、
      * 対象データを編集フォームに反映させて一覧画面を再表示
      */
-	@GetMapping("project-update")
+	@GetMapping("/project-update")
 	public String showEditForm(@RequestParam("projectId") Integer ProjectId, Model model) {
-		List<Project> projects = projectService.findAll();
+		List<Project> projectList = projectService.findAll();
 		Project project = projectService.findById(ProjectId);
 		
 		ProjectEditForm form = new ProjectEditForm();
@@ -66,8 +71,10 @@ public class ProjectController {
 		form.setProjectName(project.getProjectName());
 		form.setStatus(project.getStatus());
 		
-		model.addAttribute("projects",projects);
+		model.addAttribute("projectList",projectList);
 		model.addAttribute("project",project);
+		model.addAttribute("projectCreateForm", new ProjectCreateForm());
+		model.addAttribute("projectEditForm", form);
 		
 		return "projects/list";
 	}
@@ -83,14 +90,14 @@ public class ProjectController {
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            List<Project> projects = projectService.findAll();
-            model.addAttribute("projects", projects);
+            List<Project> projectList = projectService.findAll();
+            model.addAttribute("projectList", projectList);
+            model.addAttribute("projectCreateForm", new ProjectCreateForm());
             return "projects/list";
         }
 
         projectService.updateProject(projectEditForm);
-
-        return "redirect:/projects/list";
+        return "redirect:/projects";
     }
 
 }
