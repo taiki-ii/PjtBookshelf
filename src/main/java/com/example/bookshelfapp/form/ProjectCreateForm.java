@@ -11,5 +11,4 @@ public class ProjectCreateForm {
 	@Size(max = 255, message = "プロジェクト名は255文字以内で入力してください。")
 	private String projectName;
 	
-
 }

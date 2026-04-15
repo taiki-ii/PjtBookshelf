@@ -32,7 +32,7 @@ public class ProjectController {
 		return "projects/list";
 	}
 	
-	@PostMapping("/creat-new-project")
+	@PostMapping("/create-new-project")
 	public String registNewProject(
 			@Valid @ModelAttribute("projectCreateForm") ProjectCreateForm form,
 			BindingResult bindingResult,
