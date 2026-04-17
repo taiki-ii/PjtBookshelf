@@ -25,7 +25,11 @@ public class ProjectController {
 	public ProjectController(ProjectService projectService) {
 		this.projectService = projectService;
 	}
-	
+	/**
+     * プロジェクト一覧画面
+     * 初期表示
+	 * 
+     */
 	@GetMapping("/projects")
 	public String showProjectList(Model model) {
 		List<Project> projectList = projectService.getProjectList();
