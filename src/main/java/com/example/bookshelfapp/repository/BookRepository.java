@@ -10,6 +10,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 	
 	// プロジェクト単位で本を取得
 	List<Book> findByProjectId(Integer projectId);
+	// プロジェクト単位で本冊数を取得
+	long countByProjectId(Integer projectId);
 	
 	// 作成日時の新しい順で取得（直近表示用）
 	List<Book> findByProjectIdOrderByCreatedAtDesc(Integer projectId);

@@ -42,6 +42,10 @@ public class ProjectWorkspaceService {
 		//メモ全件取得
 		List<Memo> memos = memoRepository.findByProjectId(projectId);
 		
-		return new WorkspaceDTO(project, books, memos);
+		// 本・メモ数取得
+	    long bookCount = bookRepository.countByProjectId(projectId);
+	    long memoCount = memoRepository.countByProjectId(projectId);
+		
+		return new WorkspaceDTO(project, books, memos, bookCount, memoCount);
 	}
 }

@@ -7,7 +7,9 @@
 <body>
 	<h1>プロジェクト詳細</h1>
 	<h1 th:text="${workspace.project.projectName}"></h1>
+	
 	<hr>
+	
 	<h2>本一覧</h2>
 	<ul>
 		<li th:each="book : ${workspace.books}">
@@ -15,10 +17,17 @@
 		</li>
 	</ul>
 	
+	<hr>
+	
+	<p>本件数：<span th:text="${workspace.bookCount}"></span></p>
+	<p>本件数：<span th:text="${workspace.MemoCount}"></span></p>
+	
+	<hr>
+	
 	<h2>メモ一覧</h2>
 	<ul>
 	 	<li th:each="memo : ${workspace.memos}">
     	<span th:text="${memo.memoText}"></span>
-  		</li>	
+  		</li>
 </body>
 </html>
