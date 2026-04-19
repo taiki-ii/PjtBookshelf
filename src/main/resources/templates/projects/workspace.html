@@ -16,6 +16,12 @@
 			<span th:text="${book.bookTitle}"></span>
 		</li>
 	</ul>
+		<h2>メモ一覧</h2>
+	<ul>
+	 	<li th:each="memo : ${workspace.memos}">
+    	<span th:text="${memo.memoText}"></span>
+  		</li>
+  	</ul>
 	
 	<hr>
 	
@@ -24,10 +30,5 @@
 	<p><span th:text="${#temporals.format(workspace.updatedAt, 'yyyy/MM/dd HH:mm')}"></span></p>
 	<hr>
 	
-	<h2>メモ一覧</h2>
-	<ul>
-	 	<li th:each="memo : ${workspace.memos}">
-    	<span th:text="${memo.memoText}"></span>
-  		</li>
 </body>
 </html>
