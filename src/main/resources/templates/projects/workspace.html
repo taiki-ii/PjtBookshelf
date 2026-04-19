@@ -20,8 +20,8 @@
 	<hr>
 	
 	<p>本件数：<span th:text="${workspace.bookCount}"></span></p>
-	<p>本件数：<span th:text="${workspace.MemoCount}"></span></p>
-	
+	<p>メモ件数：<span th:text="${workspace.MemoCount}"></span></p>
+	<p><span th:text="${#temporals.format(workspace.updatedAt, 'yyyy/MM/dd HH:mm')}"></span></p>
 	<hr>
 	
 	<h2>メモ一覧</h2>

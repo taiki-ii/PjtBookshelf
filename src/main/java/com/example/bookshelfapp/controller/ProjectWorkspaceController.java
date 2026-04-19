@@ -36,11 +36,13 @@ public class ProjectWorkspaceController {
 		WorkspaceDTO workspace = projectWorkspaceService.getWorkspaceInfo(projectId);
 		// 共通情報
 		// model.addAttribute("workspaceInfo", projectWorkspaceService.getWorkspaceInfo(projectId));
+		model.addAttribute("updatedAt", workspace.getUpdatedAt());
 		
 		// 本直近表示（作業棚）
 		// 本全件表示（作業棚）
         model.addAttribute("projectId", projectId);
         model.addAttribute("workspace", workspace);
+        
 		
 		return "projects/workspace";
 	}

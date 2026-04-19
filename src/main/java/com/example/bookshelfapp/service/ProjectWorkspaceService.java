@@ -1,5 +1,6 @@
 package com.example.bookshelfapp.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -47,7 +48,9 @@ public class ProjectWorkspaceService {
 		// 本・メモ数取得
 	    long bookCount = bookRepository.countByProjectId(projectId);
 	    long memoCount = memoRepository.countByProjectId(projectId);
-		
-		return new WorkspaceDTO(project, books, memos, bookCount, memoCount);
+	    // プロジェクト最終更新日時取得
+	    LocalDateTime updatedAt = project.getUpdatedAt();
+	    
+		return new WorkspaceDTO(project, books, memos, bookCount, memoCount, updatedAt);
 	}
 }

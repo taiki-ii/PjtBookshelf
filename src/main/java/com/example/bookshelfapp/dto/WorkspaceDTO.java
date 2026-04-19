@@ -1,5 +1,6 @@
 package com.example.bookshelfapp.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.bookshelfapp.entity.Book;
@@ -13,13 +14,16 @@ public class WorkspaceDTO {
 	private List<Memo> memos;
 	private long bookCount;
 	private long memoCount;
+	private LocalDateTime updatedAt;
 	
-	public WorkspaceDTO(Project project, List<Book> books, List<Memo> memos, long bookCount, long memoCount) {
+	public WorkspaceDTO(Project project, List<Book> books, List<Memo> memos, long bookCount, long memoCount, LocalDateTime updatedAt) {
 		this.project = project;
 		this.books = books;
 		this.memos = memos;
         this.bookCount = bookCount;
         this.memoCount = memoCount;
+        this.updatedAt = updatedAt;
+        
 	}
 	
     public Project getProject() {
@@ -40,6 +44,10 @@ public class WorkspaceDTO {
 
     public long getMemoCount() {
         return memoCount;
+    }
+    
+    public LocalDateTime getUpdatedAt() {
+    	return updatedAt;
     }
 
 }
