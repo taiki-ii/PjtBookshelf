@@ -36,11 +36,13 @@ public class ProjectWorkspaceService {
 		Project project = projectRepository.findById(projectId)
 		.orElseThrow(() -> new IllegalArgumentException("指定したプロジェクトが存在しません。 id=" + projectId));
 		
-		// 本全件取得
-		List<Book> books = bookRepository.findByProjectId(projectId);
-
-		//メモ全件取得
-		List<Memo> memos = memoRepository.findByProjectId(projectId);
+		// 本・メモ全件取得
+		//List<Book> books = bookRepository.findByProjectId(projectId);
+		//List<Memo> memos = memoRepository.findByProjectId(projectId);
+		// 本・メモ直近の3件
+		List<Book> books = bookRepository.findTop3ByProjectIdOrderByUpdatedAtDesc(projectId);
+		List<Memo> memos = memoRepository.findTop3ByProjectIdOrderByUpdatedAtDesc(projectId);
+		
 		
 		// 本・メモ数取得
 	    long bookCount = bookRepository.countByProjectId(projectId);
