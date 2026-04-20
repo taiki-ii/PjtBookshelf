@@ -61,6 +61,7 @@
                 <th>プロジェクト名</th>
                 <th>ステータス</th>
                 <th>操作</th>
+                <th>管理画面</th>
             </tr>
         </thead>
         <tbody>
@@ -74,6 +75,11 @@
                         <button type="submit">編集</button>
                     </form>
                 </td>
+                <td>
+					<form th:action="@{/projects/{projectId}/workspace(projectId=${project.id})}" method="get">
+						<button type="submit">管理画面</button>
+					</form>
+				</td>
             </tr>
         </tbody>
     </table>

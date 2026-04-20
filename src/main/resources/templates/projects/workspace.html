@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>プロジェクト詳細</title>
+<link rel="stylesheet" th:href="@{/css/projectWorkspace.css}">
+</head>
+<body>
+	<h1>プロジェクト詳細</h1>
+	<h1 th:text="${workspace.project.projectName}"></h1>
+	
+	<hr>
+	
+	<div th:if="${view == 'shelf'}">
+		<h2>作業棚</h2>
+		
+		<h3>最近の本</h3>
+		<div th:each="book : ${workspace.recentBooks}">
+			<span th:text="${book.bookTitle}"></span>
+		</div>
+	
+		<h3>最近のメモ</h3>
+		<div th:each="memo : ${workspace.recentMemos}">
+			<span th:text="${memo.memoText}"></span>
+		</div>	
+		<hr>
+		
+		<a th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='shelf', scope='all')}">
+			全件表示
+		</a>
+	</div>
+	
+	<div th:if="${view == 'books'}">
+	    <h2>本一覧</h2>
+	    <div th:each="book : ${workspace.allBooks}">
+	        <span th:text="${book.bookTitle}"></span>
+	    </div>
+	</div>
+	
+	<div th:if="${view == 'memos'}">
+	    <h2>メモ一覧</h2>
+	    <div th:each="memo : ${workspace.allMemos}">
+	        <span th:text="${memo.memoText}"></span>
+	    </div>
+	</div>
+	
+	<div th:if="${view == 'details'}">
+	    <h2>詳細</h2>
+	    <table>
+	        <tr th:each="book : ${workspace.allBooks}">
+	            <td th:text="${book.bookTitle}"></td>
+	            <td th:text="${book.author}"></td>
+	        </tr>
+	    </table>
+	</div>
+	
+	<p>本件数：<span th:text="${workspace.bookCount}"></span></p>
+	<p>メモ件数：<span th:text="${workspace.MemoCount}"></span></p>
+	<p>最終更新日時：<span th:text="${#temporals.format(workspace.updatedAt, 'yyyy/MM/dd HH:mm')}"></span></p>
+	
+	<hr>
+	
+	<div>
+		<a class="tab"
+		   th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='shelf')}"
+       	   th:classappend="${view == 'shelf'} ? ' active' : ''">作業棚</a>
+		<a class="tab"
+		   th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='books')}"
+	       th:classappend="${view == 'books'} ? ' active' : ''">本</a>
+	
+	    <a class="tab"
+	       th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='memos')}"
+	       th:classappend="${view == 'memos'} ? ' active' : ''">メモ</a>
+	
+	    <a class="tab"
+	       th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='details')}"
+	       th:classappend="${view == 'details'} ? ' active' : ''">詳細</a>  
+     </div>
+</body>
+</html>
