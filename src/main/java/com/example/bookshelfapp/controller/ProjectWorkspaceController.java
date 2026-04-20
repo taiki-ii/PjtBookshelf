@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.bookshelfapp.dto.WorkspaceDTO;
 import com.example.bookshelfapp.service.ProjectWorkspaceService;
@@ -25,13 +26,12 @@ public class ProjectWorkspaceController {
 	@GetMapping("/projects/{projectId}/workspace")
 	public String showProjectWorkspace(
 			@PathVariable Integer projectId,
-			// @RequestParam(defalutValue = "shelf") String view,
-			// @RequestParam(defaultValue = "recent") String scope,
+			@RequestParam(defaultValue = "shelf") String view,
+			@RequestParam(defaultValue = "recent") String scope,
 			Model model) {
 		
-		model.addAttribute("projectId", projectId);
-		// model.addAttribute("view", view);
-		// model.addAttribute("scope, scope");
+		model.addAttribute("view", view);
+		model.addAttribute("scope", scope);
 		
 		WorkspaceDTO workspace = projectWorkspaceService.getWorkspaceInfo(projectId);
 		// 共通情報
@@ -39,9 +39,10 @@ public class ProjectWorkspaceController {
 		model.addAttribute("updatedAt", workspace.getUpdatedAt());
 		
 		// 本直近表示（作業棚）
-		// 本全件表示（作業棚）
         model.addAttribute("projectId", projectId);
         model.addAttribute("workspace", workspace);
+        
+        
         
 		
 		return "projects/workspace";

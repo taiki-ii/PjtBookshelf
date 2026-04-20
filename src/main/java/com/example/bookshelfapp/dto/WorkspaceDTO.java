@@ -10,16 +10,28 @@ import com.example.bookshelfapp.entity.Project;
 public class WorkspaceDTO {
 	
 	private Project project;
-	private List<Book> books;
-	private List<Memo> memos;
+	private List<Book> recentBooks;
+	private List<Memo> recentMemos;
+	private List<Book> allBooks;
+	private List<Memo> allMemos;
 	private long bookCount;
 	private long memoCount;
 	private LocalDateTime updatedAt;
 	
-	public WorkspaceDTO(Project project, List<Book> books, List<Memo> memos, long bookCount, long memoCount, LocalDateTime updatedAt) {
+	public WorkspaceDTO
+				(Project project, 
+				List<Book> recentBooks, 
+				List<Memo> recentMemos, 
+				List<Book> allBooks, 
+				List<Memo> allMemos, 
+				long bookCount, 
+				long memoCount, 
+				LocalDateTime updatedAt) {
 		this.project = project;
-		this.books = books;
-		this.memos = memos;
+		this.recentBooks = recentBooks;
+		this.recentMemos = recentMemos;
+		this.allBooks = allBooks;
+		this.allMemos = allMemos;
         this.bookCount = bookCount;
         this.memoCount = memoCount;
         this.updatedAt = updatedAt;
@@ -30,12 +42,20 @@ public class WorkspaceDTO {
         return project;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public List<Book> getRecentBooks() {
+        return recentBooks;
     }
 
-    public List<Memo> getMemos() {
-        return memos;
+    public List<Memo> getRecentMemos() {
+        return recentMemos;
+    }
+    
+    public List<Book> getAllBooks() {
+        return allBooks;
+    }
+
+    public List<Memo> getAllMemos() {
+        return allMemos;
     }
     
     public long getBookCount() {

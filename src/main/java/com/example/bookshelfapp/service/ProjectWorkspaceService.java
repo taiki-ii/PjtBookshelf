@@ -38,11 +38,11 @@ public class ProjectWorkspaceService {
 		.orElseThrow(() -> new IllegalArgumentException("指定したプロジェクトが存在しません。 id=" + projectId));
 		
 		// 本・メモ全件取得
-		//List<Book> books = bookRepository.findByProjectId(projectId);
-		//List<Memo> memos = memoRepository.findByProjectId(projectId);
+		List<Book> allBooks = bookRepository.findByProjectId(projectId);
+		List<Memo> allMemos = memoRepository.findByProjectId(projectId);
 		// 本・メモ直近の3件
-		List<Book> books = bookRepository.findTop3ByProjectIdOrderByUpdatedAtDesc(projectId);
-		List<Memo> memos = memoRepository.findTop3ByProjectIdOrderByUpdatedAtDesc(projectId);
+		List<Book> recentBooks = bookRepository.findTop3ByProjectIdOrderByUpdatedAtDesc(projectId);
+		List<Memo> recentMemos = memoRepository.findTop3ByProjectIdOrderByUpdatedAtDesc(projectId);
 		
 		
 		// 本・メモ数取得
@@ -51,6 +51,6 @@ public class ProjectWorkspaceService {
 	    // プロジェクト最終更新日時取得
 	    LocalDateTime updatedAt = project.getUpdatedAt();
 	    
-		return new WorkspaceDTO(project, books, memos, bookCount, memoCount, updatedAt);
+		return new WorkspaceDTO(project, recentBooks, recentMemos, allBooks, allMemos,bookCount, memoCount, updatedAt);
 	}
 }
