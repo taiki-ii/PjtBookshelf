@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>プロジェクト詳細</title>
-<style>
+<style>/* 
     #bookModal {
         display: none;
         position: fixed;
@@ -27,6 +27,7 @@
         background-color: rgba(0, 0, 0, 0.3);
         z-index: 999;
     }
+*/
 </style>
 <link rel="stylesheet" th:href="@{/css/projectWorkspace.css}">
 </head>
@@ -85,6 +86,7 @@
 	
 	<hr>
 	
+	<!-- 表示タブ切替 -->
 	<div>
 		<a class="tab"
 		   th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='shelf')}"
@@ -104,45 +106,89 @@
      
      <hr>
      
-<button type="button" id="openBookModal">本追加</button>
+	 <!-- 本追加モーダル -->
+	<button type="button" id="openBookModal">本追加</button>
+	
+		<div id="modalOverlay" class="modalOverlay"></div>
+		
+		<div id="bookModal" class="bookModal"
+			 th:style="${isBookModalOpen} ? 'display:block;' : 'display:none;'">
+		    <h2>本追加モーダル</h2>
+		    <p>手動入力</p>
+		    <form th:action="@{/projects/{projectId}/books(projectId=${projectId})}"
+		    	  th:object="${bookCreateForm}" 
+		    	  method="post">
+		    		<label for="bookTitle">題名</label>
+		    	  	<input type="text" id="bookTitle" th:field="*{bookTitle}"></br>
+		    	  	<label for="author">作者</label>
+		    	  	<input type="text" id="author" th:field="*{author}"></br>
+		    	  	<label for="company">出版社</label>
+		    	  	<input type="text" id="company" th:field="*{company}"></br>
+		    	  	<label for="publicationDate">出版日</label>
+		    	  	<input type="date" id="publicationDate" th:field="*{publicationDate}"></br>
+		    		<button type="submit">追加</button></br>
+		    </form>
+		    <button type="button" id="closeBookModal">閉じる</button>
+		</div>
+		
+		<hr>
+		
+		<!-- 本削除モーダル -->
+		<button type="button" id="openBookDeleteModal">本削除</button>
+		
+			<div id="deleteModalOverlay" class="modalOverlay">
 
-	<div id="modalOverlay"></div>
-	
-	<div id="bookModal"
-		 th:style="${isBookModalOpen} ? 'display:block;' : 'display:none;'">
-	    <h2>本追加モーダル</h2>
-	    <p>手動入力</p>
-	    <form th:action="@{/projects/{projectId}/books(projectId=${projectId})}"
-	    	  th:object="${bookCreateForm}" 
-	    	  method="post">
-	    		<label for="bookTitle">題名</label>
-	    	  	<input type="text" id="bookTitle" th:field="*{bookTitle}"></br>
-	    	  	<label for="author">作者</label>
-	    	  	<input type="text" id="author" th:field="*{author}"></br>
-	    	  	<label for="company">出版社</label>
-	    	  	<input type="text" id="company" th:field="*{company}"></br>
-	    	  	<label for="publicationDate">出版日</label>
-	    	  	<input type="date" id="publicationDate" th:field="*{publicationDate}"></br>
-	    		<button type="submit">追加</button></br>
-	    </form>
-	    <button type="button" id="closeBookModal">閉じる</button>
-	</div>
-	
+			<div id="bookDeleteModal" class="bookModal"
+				 th:style="${isBookModalOpen} ? 'display:block' : 'display:none;'">
+				<h2>本削除モーダル</h2>	
+				<form th:action="@{/projects/{projectId}/books/delete(projectId=${projectId})}"
+					  th:object="${bookDeleteForm}"
+					  method="post">
+					<label for="deleteBookId">削除する本</label>
+					<select id="deleteBookId" name="bookId">
+						<option value="">選択してください</option>
+						<option th:each="book : ${workspace.allBooks}"
+								th:value="${book.id}"
+								th:text="${book.bookTitle}">
+						</option>
+					</select>
+					
+					<button type="submit">削除</button>
+				</form>
+				<button type="button" id="closeBookDeleteModal">閉じる</button>
+			<div> 
+				  	
 	<script>
+		// 本追加モーダル制御
 	    const openBookModalButton = document.getElementById('openBookModal');
 	    const closeBookModalButton = document.getElementById('closeBookModal');
 	    const bookModal = document.getElementById('bookModal');
 	    const modalOverlay = document.getElementById('modalOverlay');
-	
+	    
 	    openBookModalButton.addEventListener('click', () => {
 	        bookModal.style.display = 'block';
 	        modalOverlay.style.display = 'block';
 	    });
-	
 	    closeBookModalButton.addEventListener('click', () => {
 	        bookModal.style.display = 'none';
 	        modalOverlay.style.display = 'none';
 	    });
+	    
+	    // 本削除モーダル制御
+	    const openBookDeleteModalButton = document.getElementById('openBookDeleteModal');
+	    const closeBookDeleteModalButton = document.getElementById('closeBookDeleteModal');
+	    const bookDeleteModal = document.getElementById('bookDeleteModal');
+	    const deleteModalOverlay = document.getElementById('deleteModalOverlay');
+	    
+	    openBookDeleteModalButton.addEventListener('click' , () =>{
+			bookDeleteModal.style.display = 'block';
+			deleteModalOverlay.style.display = 'block';
+		});
+		closeBookDeleteModalButton.addEventListener('click' , () =>{
+			bookDeleteModal.style.display = 'none';
+			deleteModalOverlay.style.display = 'none';
+		})
+		
 	</script>
 	
 </body>

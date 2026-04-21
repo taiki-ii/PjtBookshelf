@@ -56,6 +56,7 @@ public class ProjectWorkspaceController {
         
 		return "projects/workspace";
 	}
+
 	/**
      * プロジェクト詳細画面
      * 本追加
@@ -80,6 +81,18 @@ public class ProjectWorkspaceController {
 		bookService.addBook(projectId, form);
 		return "redirect:/projects/" + projectId + "/workspace?view=shelf";
 	}
-	
+
+	/**
+     * プロジェクト詳細画面
+     * 本削除
+	 * 
+     */
+	@PostMapping("/projects/{projectId}/books/delete")
+	public String deleteBooks(
+		@PathVariable Integer projectId,
+		@RequestParam Integer bookId){
+			bookService.deleteBook(projectId, bookId);
+			return "redirect:/projects/" + projectId + "/workspace?view=shelf";
+		}
 
 }
