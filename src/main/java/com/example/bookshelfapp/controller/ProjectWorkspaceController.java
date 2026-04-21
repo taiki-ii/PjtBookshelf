@@ -2,20 +2,29 @@ package com.example.bookshelfapp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.bookshelfapp.dto.WorkspaceDTO;
+import com.example.bookshelfapp.form.BookCreateForm;
+import com.example.bookshelfapp.service.BookService;
 import com.example.bookshelfapp.service.ProjectWorkspaceService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class ProjectWorkspaceController {
 	
 	private final ProjectWorkspaceService projectWorkspaceService;
+	private final BookService bookService;
 	
-	public ProjectWorkspaceController(ProjectWorkspaceService projectWorkspaceService) {
+	public ProjectWorkspaceController(ProjectWorkspaceService projectWorkspaceService, BookService bookService) {
 		this.projectWorkspaceService = projectWorkspaceService;
+		this.bookService = bookService;
 	}
 	
 	/**
@@ -42,9 +51,35 @@ public class ProjectWorkspaceController {
         model.addAttribute("projectId", projectId);
         model.addAttribute("workspace", workspace);
         
+        model.addAttribute("bookCreateForm", new BookCreateForm());
+        model.addAttribute("isBookModalOpen", false);
         
-        
-		
 		return "projects/workspace";
 	}
+	/**
+     * プロジェクト詳細画面
+     * 本追加
+	 * 
+     */
+	@PostMapping("/projects/{projectId}/books")
+	public String addBooks(
+			@PathVariable Integer projectId,
+			@Valid @ModelAttribute("bookCreateForm") BookCreateForm form,
+			BindingResult bindingResult,
+			Model model) {
+		
+		if(bindingResult.hasErrors()) {
+	        model.addAttribute("projectId", projectId);
+	        model.addAttribute("view", "shelf");
+	        model.addAttribute("scope", "recent");
+	        model.addAttribute("workspace", projectWorkspaceService.getWorkspaceInfo(projectId));
+	        model.addAttribute("isBookModalOpen", true);
+	        return "projects/workspace";				
+		}
+	
+		bookService.addBook(projectId, form);
+		return "redirect:/projects/" + projectId + "/workspace?view=shelf";
+	}
+	
+
 }
