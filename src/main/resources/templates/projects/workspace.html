@@ -141,7 +141,8 @@
 			<div id="bookDeleteModal" class="bookModal"
 				 th:style="${isBookModalOpen} ? 'display:block' : 'display:none;'">
 				<h2>本削除モーダル</h2>	
-				<form th:action="@{/projects/{projectId}/books/delete(projectId=${projectId})}"
+				<form id="bookDeleteForm"
+					  th:action="@{/projects/{projectId}/books/delete(projectId=${projectId})}"
 					  th:object="${bookDeleteForm}"
 					  method="post">
 					<label for="deleteBookId">削除する本</label>
@@ -149,14 +150,15 @@
 						<option value="">選択してください</option>
 						<option th:each="book : ${workspace.allBooks}"
 								th:value="${book.id}"
-								th:text="${book.bookTitle}">
+								th:text="${book.bookTitle}"
+								th:data-has-memos="${book.memos.size() > 0}">
 						</option>
 					</select>
 					
-					<button type="submit">削除</button>
+					<button type="submit" id="bookDeleteButton">削除</button></br>
 				</form>
 				<button type="button" id="closeBookDeleteModal">閉じる</button>
-			<div> 
+			</div> 
 				  	
 	<script>
 		// 本追加モーダル制御
@@ -187,7 +189,36 @@
 		closeBookDeleteModalButton.addEventListener('click' , () =>{
 			bookDeleteModal.style.display = 'none';
 			deleteModalOverlay.style.display = 'none';
-		})
+		});
+
+		//本削除ボタン押下時、ダイアログメッセージ制御
+		const bookDeleteButton = document.getElementById('bookDeleteButton');
+		const bookDeleteForm = document.getElementById('bookDeleteForm');
+		const deleteBookSelect = document.getElementById('deleteBookId');
+
+		bookDeleteButton.addEventListener('click' , function(e) {
+			const selectedOption = deleteBookSelect.options[deleteBookSelect.selectedIndex];
+
+			if(!selectedOption.value){
+				alert("削除する本を選択してください");
+				e.preventDefault();
+				return;
+			}
+
+			const hasMemos = selectedOption.dataset.hasMemos === "true";
+
+			    let message;
+
+				if (hasMemos) {
+					message = "本に紐づいているメモも削除しますがよろしいでしょうか？";
+				} else {
+					message = "削除してもよろしいでしょうか？";
+				}
+
+				if (!confirm(message)) {
+					e.preventDefault();
+				}
+			});
 		
 	</script>
 	

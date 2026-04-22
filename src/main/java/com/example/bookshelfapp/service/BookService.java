@@ -47,7 +47,7 @@ public class BookService {
 		if(!book.getProject().getId().equals(projectId)){
 			throw new IllegalArgumentException("指定プロジェクトに属さない本です");
 		}
-
+		
 		bookRepository.delete(book);
 	}
 
