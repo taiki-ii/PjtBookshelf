@@ -25,10 +25,12 @@ public class ProjectService {
         this.userRepository = userRepository;
     }
 
+    // プロジェクト一覧表示
     public List<Project> getProjectList() {
         return projectRepository.findAll();
     }
     
+    // プロジェクト新規作成
     public void createProject(ProjectCreateForm form) {
     	// 開発用に仮UserIdを登録する
     	User user = userRepository.findById(1)
@@ -43,15 +45,18 @@ public class ProjectService {
     	projectRepository.save(project);
     }
     
+    // プロジェクト一覧表示
     public List<Project> findAll(){
     	return projectRepository.findAll();
     }
     
+    // 選択プロジェクト表示
     public Project findById(Integer projectId) {
         return projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("指定したプロジェクトが存在しません。 id=" + projectId));
     }
 
+    // プロジェクト名変更
     @Transactional
     public void updateProject(ProjectEditForm form) {
         Project project = projectRepository.findById(form.getId())

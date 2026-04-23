@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -54,7 +55,7 @@ public class Book {
     @Column(name = "external_book_id", nullable = false, length = 255)
     private String externalBookId;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade= CascadeType.REMOVE)
     private List<Memo> memos = new ArrayList<>();
 
     public Book() {

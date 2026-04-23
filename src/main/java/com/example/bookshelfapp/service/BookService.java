@@ -21,6 +21,7 @@ public class BookService {
 		this.projectRepository = projectRepository;
 	}
 	
+	// 本追加
 	public void addBook(Integer projectId, BookCreateForm form) {
 		Project project = projectRepository.findById(projectId)
 				.orElseThrow(() -> new IllegalArgumentException("プロジェクトが存在しません"));
@@ -36,6 +37,18 @@ public class BookService {
 		book.setProject(project);
     	
     	bookRepository.save(book);
+	}
+
+	// 本削除
+	public void deleteBook(Integer projectId, Integer bookId){
+		Book book = bookRepository.findById(bookId)
+			.orElseThrow(() -> new IllegalArgumentException("本が存在しません"));
+		
+		if(!book.getProject().getId().equals(projectId)){
+			throw new IllegalArgumentException("指定プロジェクトに属さない本です");
+		}
+		
+		bookRepository.delete(book);
 	}
 
 }
