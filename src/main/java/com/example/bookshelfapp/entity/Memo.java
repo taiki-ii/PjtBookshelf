@@ -27,6 +27,9 @@ public class Memo {
     @JoinColumn(name = "book_id")
     private Book book;
 
+    @Column(name = "memo_title", nullable = false, length = 255)
+    private String memoTitle;
+    
     @Column(name = "memo_text", nullable = false, length = 30000)
     private String memoText;
 
@@ -62,6 +65,14 @@ public class Memo {
     public void setBook(Book book) {
         this.book = book;
     }
+    
+    public String getMemoTitle() {
+        return memoTitle;
+    }
+
+    public void setMemoTitle(String memoTitle) {
+        this.memoTitle = memoTitle;
+    }    
 
     public String getMemoText() {
         return memoText;
@@ -86,4 +97,6 @@ public class Memo {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+    
+    
 }
