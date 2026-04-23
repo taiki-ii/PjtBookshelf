@@ -120,6 +120,7 @@
 		    	  method="post">
 		    		<label for="bookTitle">題名</label>
 		    	  	<input type="text" id="bookTitle" th:field="*{bookTitle}"></br>
+					<div th:if="${#fields.hasErrors('bookTitle')}" th:errors="*{bookTitle}" style="color:red;"></div>
 		    	  	<label for="author">作者</label>
 		    	  	<input type="text" id="author" th:field="*{author}"></br>
 		    	  	<label for="company">出版社</label>
