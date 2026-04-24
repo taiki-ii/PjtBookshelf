@@ -137,14 +137,13 @@
 		<!-- 本削除モーダル -->
 		<button type="button" id="openBookDeleteModal">本削除</button>
 		
-			<div id="deleteModalOverlay" class="modalOverlay">
+			<div id="deleteModalOverlay" class="modalOverlay"></div>
 
 			<div id="bookDeleteModal" class="bookModal"
 				 th:style="${isBookModalOpen} ? 'display:block' : 'display:none;'">
 				<h2>本削除モーダル</h2>	
 				<form id="bookDeleteForm"
 					  th:action="@{/projects/{projectId}/books/delete(projectId=${projectId})}"
-					  th:object="${bookDeleteForm}"
 					  method="post">
 					<label for="deleteBookId">削除する本</label>
 					<select id="deleteBookId" name="bookId">
@@ -160,7 +159,19 @@
 				</form>
 				<button type="button" id="closeBookDeleteModal">閉じる</button>
 			</div> 
-				  	
+
+			<hr>
+
+		<!-- メモ追加モーダル -->
+		<button id="openMemoModal">メモ追加</button>
+
+		<dialog>
+			<h2>本追加モーダル</h2>
+			<button id="closeMemoModal">閉じる</button>
+		</dialog>
+
+			 
+
 	<script>
 		// 本追加モーダル制御
 	    const openBookModalButton = document.getElementById('openBookModal');
@@ -220,6 +231,19 @@
 					e.preventDefault();
 				}
 			});
+
+		// メモ追加モーダル
+		const dialog = document.querySelector("dialog");
+		
+		const openButton = document.getElementById("openMemoModal");
+		openButton.addEventListener("click", () => {
+			dialog.showModal();
+		});
+
+		const closeButton = document.getElementById("closeMemoModal");
+		closeButton.addEventListener("click", () =>{
+			dialog.close();
+		});
 		
 	</script>
 	
