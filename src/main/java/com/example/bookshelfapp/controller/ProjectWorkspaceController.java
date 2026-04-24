@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.bookshelfapp.dto.WorkspaceDTO;
 import com.example.bookshelfapp.form.BookCreateForm;
 import com.example.bookshelfapp.service.BookService;
+import com.example.bookshelfapp.service.MemoService;
 import com.example.bookshelfapp.service.ProjectWorkspaceService;
 
 import jakarta.validation.Valid;
@@ -21,10 +22,12 @@ public class ProjectWorkspaceController {
 	
 	private final ProjectWorkspaceService projectWorkspaceService;
 	private final BookService bookService;
+	private final MemoService memoService;
 	
-	public ProjectWorkspaceController(ProjectWorkspaceService projectWorkspaceService, BookService bookService) {
+	public ProjectWorkspaceController(ProjectWorkspaceService projectWorkspaceService, BookService bookService,MemoService memoService) {
 		this.projectWorkspaceService = projectWorkspaceService;
 		this.bookService = bookService;
+		this.memoService = memoService;
 	}
 	
 	/**
@@ -92,6 +95,19 @@ public class ProjectWorkspaceController {
 		@PathVariable Integer projectId,
 		@RequestParam Integer bookId){
 			bookService.deleteBook(projectId, bookId);
+			return "redirect:/projects/" + projectId + "/workspace?view=shelf";
+		}
+
+	/**
+     * プロジェクト詳細画面
+     * 本追加
+	 * 
+     */
+	@PostMapping("/projects/{projectId}/memos")
+	public String addBook(
+		@PathVariable Integer projectId,
+		@RequestParam Integer bookId){
+			memoService.addMemo(projectId, bookId);
 			return "redirect:/projects/" + projectId + "/workspace?view=shelf";
 		}
 

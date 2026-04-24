@@ -47,7 +47,8 @@
 	
 		<h3>最近のメモ</h3>
 		<div th:each="memo : ${workspace.recentMemos}">
-			<span th:text="${memo.memoText}"></span>
+			<span th:text="${memo.memoTitle}"></span></br>
+			<span th:text="${memo.memoText}"></span></br>
 		</div>	
 		<hr>
 		
@@ -164,13 +165,30 @@
 
 		<!-- メモ追加モーダル -->
 		<button id="openMemoModal">メモ追加</button>
+		<div>
+			<dialog id="memoDialog">
+			<h2>メモ追加モーダル</h2>
+				<form id="memoModal"
+					th:action="@{/projects/{projectId}/memos(projectId=${projectId})}"
+					method="post">
+					<label for="connectBookId">本に紐づけて追加</label>
+					<select id="connectBookId" name="bookId">
+						<option value="">選択してください</option>
+						<option th:each="book : ${workspace.allBooks}"
+								th:value="${book.id}"
+								th:text="${book.bookTitle}"
+								th:data-has-memos="${book.memos.size() > 0}">
+						</option>
+					</select>
 
-		<dialog>
-			<h2>本追加モーダル</h2>
-			<button id="closeMemoModal">閉じる</button>
-		</dialog>
+					<button type="submit" id="memoCreateButton">追加</button><br>
+				</form>
+				<button id="closeMemoModal">閉じる</button>
+			</dialog>
+		</div>
 
-			 
+
+
 
 	<script>
 		// 本追加モーダル制御
@@ -232,19 +250,19 @@
 				}
 			});
 
-		// メモ追加モーダル
-		const dialog = document.querySelector("dialog");
-		
+		// メモ追加モーダル	
+		const dialog = document.getElementById("memoDialog");
 		const openButton = document.getElementById("openMemoModal");
+		const closeButton = document.getElementById("closeMemoModal");		
+
 		openButton.addEventListener("click", () => {
 			dialog.showModal();
 		});
-
-		const closeButton = document.getElementById("closeMemoModal");
 		closeButton.addEventListener("click", () =>{
 			dialog.close();
 		});
 		
+		//メモ追加ボタン押下時、ダイアログメッセージ制御
 	</script>
 	
 </body>
