@@ -137,11 +137,11 @@
 				<button type="button" id="closeBookDeleteModal">閉じる</button>
 			</div> 
 
-			<hr>
+		<hr>
 
 		<!-- メモ追加モーダル -->
 		<button id="openMemoModal">メモ追加</button></br>
-		<div th:if="${errorMessage}" style="color: red;">>
+		<div th:if="${errorMessage}" style="color: red;">
 			<span th:text="${errorMessage}"></span>
 		</div>
 		<div>
@@ -155,8 +155,7 @@
 						<option value="">選択してください</option>
 						<option th:each="book : ${workspace.allBooks}"
 								th:value="${book.id}"
-								th:text="${book.bookTitle}"
-								th:data-has-memos="${book.memos.size() > 0}">
+								th:text="${book.bookTitle}">
 						</option>
 					</select>
 
@@ -166,8 +165,23 @@
 			</dialog>
 		</div>
 
+		<hr>
 
-
+		<!-- メモ削除モーダル -->
+		<button id="openMemoDeleteDialog">メモ削除</button></br>
+		<div>
+			<dialog id="memoDeleteDialog">
+				<h2>メモ削除モーダル</h2>
+				<label for="connectedBookId">本に紐づけたメモを削除</label>
+				<select>
+					<option>選択してください</option>
+					<option th:each="memo : ${workspace.bookLinkedMemos}"
+							th:text="${memo.memoTitle}">
+					</option>
+				</select>
+				<button id="closeMemoDeleteDialog">閉じる</button>
+			</dialog>
+		</div>
 
 	<script>
 		// 本追加モーダル制御
@@ -229,7 +243,7 @@
 				}
 			});
 
-		// メモ追加モーダル	
+		// メモ追加モーダル制御
 		const dialog = document.getElementById("memoDialog");
 		const openButton = document.getElementById("openMemoModal");
 		const closeButton = document.getElementById("closeMemoModal");		
@@ -241,7 +255,17 @@
 			dialog.close();
 		});
 		
-		//メモ追加ボタン押下時、ダイアログメッセージ制御
+		// メモ削除モーダル制御
+		const openMemoDeleteDialog = document.getElementById("openMemoDeleteDialog");
+		const closeMemoDeleteDialog = document.getElementById("closeMemoDeleteDialog");
+		const memoDeleteDialog = document.getElementById("memoDeleteDialog");
+
+		openMemoDeleteDialog.addEventListener('click' , () =>{
+			memoDeleteDialog.showModal();
+		})
+		closeMemoDeleteDialog.addEventListener('click' , () =>{
+			memoDeleteDialog.close();
+		})
 	</script>
 	
 </body>
