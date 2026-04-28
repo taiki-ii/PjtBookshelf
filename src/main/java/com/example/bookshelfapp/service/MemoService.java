@@ -25,6 +25,9 @@ public class MemoService {
     }
 
     public void addMemo(Integer projectId, Integer bookId){
+		if(memoRepository.existsByBook_Id(bookId)){
+			throw new IllegalArgumentException("この本には既にメモが登録されています");
+		}
  		Project project = projectRepository.findById(projectId)
 				.orElseThrow(() -> new IllegalArgumentException("プロジェクトが存在しません"));
 		Book book = bookRepository.findById(bookId)
