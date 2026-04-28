@@ -20,6 +20,7 @@ public interface MemoRepository extends JpaRepository<Memo, Integer> {
 	
 	// 新しい順
 	List<Memo> findByProjectIdOrderByCreatedAtDesc(Integer projectId);
-	
+
+	boolean existsByBook_Id(Integer bookId);
 
 }

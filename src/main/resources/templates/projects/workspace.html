@@ -3,31 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>プロジェクト詳細</title>
-<style>/* 
-    #bookModal {
-        display: none;
-        position: fixed;
-        top: 20%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 400px;
-        padding: 20px;
-        background-color: white;
-        border: 1px solid #333;
-        z-index: 1000;
-    }
-
-    #modalOverlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.3);
-        z-index: 999;
-    }
-*/
+<style>
 </style>
 <link rel="stylesheet" th:href="@{/css/projectWorkspace.css}">
 </head>
@@ -164,7 +140,10 @@
 			<hr>
 
 		<!-- メモ追加モーダル -->
-		<button id="openMemoModal">メモ追加</button>
+		<button id="openMemoModal">メモ追加</button></br>
+		<div th:if="${errorMessage}" style="color: red;">>
+			<span th:text="${errorMessage}"></span>
+		</div>
 		<div>
 			<dialog id="memoDialog">
 			<h2>メモ追加モーダル</h2>

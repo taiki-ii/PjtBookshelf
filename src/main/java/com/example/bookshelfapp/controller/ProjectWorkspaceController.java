@@ -100,15 +100,37 @@ public class ProjectWorkspaceController {
 
 	/**
      * プロジェクト詳細画面
-     * 本追加
+     * メモ追加
 	 * 
      */
 	@PostMapping("/projects/{projectId}/memos")
 	public String addBook(
 		@PathVariable Integer projectId,
-		@RequestParam Integer bookId){
+		@RequestParam Integer bookId,
+		Model model){
+
+			try{
 			memoService.addMemo(projectId, bookId);
 			return "redirect:/projects/" + projectId + "/workspace?view=shelf";
+			} catch(IllegalArgumentException e) {
+
+				WorkspaceDTO workspace = projectWorkspaceService.getWorkspaceInfo(projectId);
+
+				// 共通情報
+				model.addAttribute("updatedAt", workspace.getUpdatedAt());
+				
+				// 本直近表示（作業棚）
+		        model.addAttribute("projectId", projectId);
+		        model.addAttribute("workspace", workspace);
+				model.addAttribute("view", "memos");
+		     
+		        model.addAttribute("bookCreateForm", new BookCreateForm());
+		        model.addAttribute("isBookModalOpen", false);
+				model.addAttribute("errorMessage", e.getMessage());
+
+				return "projects/workspace";
+			}
+
 		}
 
 }
