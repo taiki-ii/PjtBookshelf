@@ -35,4 +35,22 @@
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 999;
     }
+
+dialog {
+    border: none;
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
+    backdrop-filter: blur(2px); /* 背景を少しぼかす */
+}
+
+dialog h2 {
+    margin-top: 0;
+    color: #333;
+}
     

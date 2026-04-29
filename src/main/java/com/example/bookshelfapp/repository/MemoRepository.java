@@ -14,6 +14,8 @@ public interface MemoRepository extends JpaRepository<Memo, Integer> {
 	// プロジェクト単位でメモを直近3件取得
 	List<Memo> findTop3ByProjectIdOrderByUpdatedAtDesc(Integer projectId);
 	Optional<Memo> findByProjectIdOrderByUpdatedAtDesc(Integer projectId);
+
+	List<Memo> findByProject_IdAndBookIsNotNull(Integer projectId);
 	
 	// プロジェクト単位でメモ数取得
 	long countByProjectId(Integer projectId);
