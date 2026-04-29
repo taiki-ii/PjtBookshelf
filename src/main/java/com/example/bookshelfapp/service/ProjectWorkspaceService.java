@@ -43,7 +43,7 @@ public class ProjectWorkspaceService {
 		List<Book> recentBooks = bookRepository.findTop3ByProjectIdOrderByUpdatedAtDesc(projectId);
 		List<Memo> recentMemos = memoRepository.findTop3ByProjectIdOrderByUpdatedAtDesc(projectId);
 		// 本と紐づくメモ取得
-		List<Memo> bookLinkedMemos = memoRepository.findByProjectIdAndBookIsNotNull(projectId);
+		List<Memo> bookLinkedMemos = memoRepository.findByProject_IdAndBookIsNotNull(projectId);
 		
 		
 		// 本・メモ数取得
@@ -52,6 +52,6 @@ public class ProjectWorkspaceService {
 	    // プロジェクト最終更新日時取得
 	    LocalDateTime updatedAt = project.getUpdatedAt();
 	    
-		return new WorkspaceDTO(project, recentBooks, recentMemos, allBooks, bookLinkedMemos, allMemos, bookCount, memoCount, updatedAt);
+		return new WorkspaceDTO(project, recentBooks, recentMemos, allBooks, allMemos, bookLinkedMemos, bookCount, memoCount, updatedAt);
 	}
 }

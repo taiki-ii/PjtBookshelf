@@ -172,13 +172,20 @@
 		<div>
 			<dialog id="memoDeleteDialog">
 				<h2>メモ削除モーダル</h2>
-				<label for="connectedBookId">本に紐づけたメモを削除</label>
-				<select>
+				<form id="memoDeleteModal"
+					th:action="@{/projects/{projectId}/memos/{memoId}/delete(projectId=${projectId})}"
+					method="post">
+					<label for="connectedBookId">本に紐づけたメモを削除</label>
+				<select name="memoId">
 					<option>選択してください</option>
 					<option th:each="memo : ${workspace.bookLinkedMemos}"
-							th:text="${memo.memoTitle}">
+							th:text="${memo.memoTitle}"
+							th:value="${memo.id}">
 					</option>
 				</select>
+
+					<button type="submit" id="memoDeleteButton">削除</button></br>
+				</form>
 				<button id="closeMemoDeleteDialog">閉じる</button>
 			</dialog>
 		</div>

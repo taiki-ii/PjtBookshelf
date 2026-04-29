@@ -44,5 +44,20 @@ public class MemoService {
         memoRepository.save(memo);
     }
 
+	public void deleteMemo(Integer projectId, Integer memoId){
+
+		Memo memo = memoRepository.findById(memoId)
+			.orElseThrow(() -> new IllegalArgumentException("メモが存在しません"));
+
+		if (!memo.getProject().getId().equals(projectId)) {
+			throw new IllegalArgumentException("不正な操作です");
+		}
+
+		if (memo.getBook() == null) {
+        throw new IllegalArgumentException("このメモは削除対象ではありません");
+    	}
+
+		memoRepository.delete(memo);
+	}
 
 }

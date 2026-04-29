@@ -132,5 +132,18 @@ public class ProjectWorkspaceController {
 			}
 
 		}
+	/**
+     * プロジェクト詳細画面
+     * メモ削除
+	 * 
+     */
+	@PostMapping("/projects/{projectId}/memos/{memoId}/delete")
+	public String deleteMemo(
+		@PathVariable Integer projectId,
+		@RequestParam Integer memoId){
 
+			memoService.deleteMemo(projectId, memoId);
+
+			return "redirect:/projects/" + projectId + "/workspace?view=memos";
+		}
 }
