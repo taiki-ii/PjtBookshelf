@@ -53,4 +53,30 @@ dialog h2 {
     margin-top: 0;
     color: #333;
 }
-    
+
+.memo-card {
+    width: 180px;
+    min-height: 140px;
+    border: 1px solid #999;
+    padding: 8px;
+    margin: 12px;
+    display: inline-block;
+    vertical-align: top;
+    background-color: #fff;
+}
+
+.memo-title {
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 8px;
+}
+
+.memo-preview {
+    font-size: 14px;
+    height: 70px;
+    overflow: hidden;
+}
+
+.memo-actions {
+    margin-top: 8px;
+}

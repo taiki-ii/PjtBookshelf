@@ -146,4 +146,18 @@ public class ProjectWorkspaceController {
 
 			return "redirect:/projects/" + projectId + "/workspace?view=memos";
 		}
+	/**
+     * プロジェクト詳細画面
+     * メモ追加
+	 * 
+     */
+	@GetMapping("/projects/{projectId}/memos/{memoId}/edit")
+	public String showMemoEditForm(
+		@PathVariable Integer projectId,
+		@PathVariable Integer memoId){
+
+			// memoService.editMemo(project, memoId);
+
+			return "projects/editMemo";
+		}
 }

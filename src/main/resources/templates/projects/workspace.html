@@ -42,8 +42,17 @@
 	
 	<div th:if="${view == 'memos'}">
 	    <h2>メモ一覧</h2>
-	    <div th:each="memo : ${workspace.allMemos}">
-	        <span th:text="${memo.memoText}"></span>
+	    <div class="memo-card" th:each="memo : ${workspace.allMemos}">
+	        <div class="memo-title" th:text="${memo.memoTitle}"></div>
+
+			<div class="memo-preview" th:text="${memo.memoText}"></div>
+
+			<div class="memo-action">
+				<button type="button">プレビュー</button>
+				<a th:href="@{/projects/{projectId}/memos/{memoId}/edit(projectId=${projectId}, memoId=${memo.id})}">
+					✎編集
+				</a>
+			</div>
 	    </div>
 	</div>
 	
