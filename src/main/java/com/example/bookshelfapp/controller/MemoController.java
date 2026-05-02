@@ -4,8 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.bookshelfapp.dto.MemoEditDTO;
 import com.example.bookshelfapp.form.MemoEditForm;
 import com.example.bookshelfapp.service.BookService;
 import com.example.bookshelfapp.service.MemoService;
@@ -32,14 +32,15 @@ public class MemoController {
         @PathVariable Integer projectId,
         @PathVariable Integer memoId,
         MemoEditForm memoEditForm,
+        @RequestParam(defaultValue = "edit") String returnTo,
         Model model){
 
     		memoService.editMemo(projectId, memoId, memoEditForm);
-    		
-    		MemoEditDTO memoEditDTO = memoService.getMemoEditDTO(projectId, memoId);
-    		
-            model.addAttribute("memoEditForm",memoEditForm);
-            model.addAttribute("memoEditDTO",memoEditDTO);
+
+            if ("workspace".equals(returnTo)) {
+                return "redirect:/projects/" + projectId + "/workspace?view=memos";
+            }
+
             return "redirect:/projects/" + projectId + "/memos/" + memoId + "/edit";
     }
 }
