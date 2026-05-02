@@ -38,9 +38,8 @@ public class MemoController {
     		
     		MemoEditDTO memoEditDTO = memoService.getMemoEditDTO(projectId, memoId);
     		
-            memoService.editMemo(projectId, memoId, memoEditForm);
             model.addAttribute("memoEditForm",memoEditForm);
             model.addAttribute("memoEditDTO",memoEditDTO);
-            return "projects/editMemo";
+            return "redirect:/projects/" + projectId + "/memos/" + memoId + "/edit";
     }
 }

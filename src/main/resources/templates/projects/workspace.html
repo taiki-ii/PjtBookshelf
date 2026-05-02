@@ -48,11 +48,33 @@
 			<div class="memo-preview" th:text="${memo.memoText}"></div>
 
 			<div class="memo-action">
-				<button type="button">プレビュー</button>
+				<button type="button" class="memoPreviewModalBtn">プレビュー</button>
 				<a th:href="@{/projects/{projectId}/memos/{memoId}/edit(projectId=${projectId}, memoId=${memo.id})}">
 					✎編集
 				</a>
 			</div>
+			<dialog class="memoCardModal">
+				<!-- ヘッダー -->
+				 <div class="modalHeader">
+					<span th:text="${memo.memoTitle}"></span>
+					<button type="button" class="memoEditBtn">✎編集</button>
+					<button type="button" class="closeMemoCardModal">✕</button>
+				 </div>
+				<!-- 表示モード -->
+				<div class="memoViewMode">
+					<p th:text="${memo.memoText}"></p>
+				</div>
+				<!-- 編集モード -->
+				<div class="memoEditMode" style="display:none;">
+					<form th:action="@{/projects/{projectId}/memos/{memoId}/edit}"
+						  method="post">
+						<textarea name="memoText"
+						th:text="${memo.memoText}"></textarea>
+
+						<button type="submit">保存</button>
+					</form>
+				</div>
+			</dialog>
 	    </div>
 	</div>
 	
@@ -282,6 +304,34 @@
 		closeMemoDeleteDialog.addEventListener('click' , () =>{
 			memoDeleteDialog.close();
 		})
+
+		// メモカードプレビューモーダル制御
+		// メモカード上の編集制御
+		document.querySelectorAll(".memoPreviewModalBtn").forEach((button) => {
+			button.addEventListener("click", () => {
+				const memoCard = button.closest(".memo-card");
+				const modal = memoCard.querySelector(".memoCardModal");
+				modal.showModal();
+			});
+		});
+
+		document.querySelectorAll(".closeMemoCardModal").forEach((button) => {
+			button.addEventListener("click", () => {
+				const modal = button.closest(".memoCardModal");
+				modal.close();
+			});
+		});
+
+		document.querySelectorAll(".memoEditBtn").forEach((button) => {
+			button.addEventListener("click", () => {
+				const modal = button.closest(".memoCardModal");
+				const viewMode = modal.querySelector(".memoViewMode");
+				const editMode = modal.querySelector(".memoEditMode");
+
+				viewMode.style.display = "none";
+				editMode.style.display = "block";
+			});
+		});
 	</script>
 	
 </body>
