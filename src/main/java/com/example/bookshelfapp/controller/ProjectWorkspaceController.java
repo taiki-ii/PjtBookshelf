@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.bookshelfapp.dto.MemoEditDTO;
 import com.example.bookshelfapp.dto.WorkspaceDTO;
 import com.example.bookshelfapp.form.BookCreateForm;
+import com.example.bookshelfapp.form.MemoEditForm;
 import com.example.bookshelfapp.service.BookService;
 import com.example.bookshelfapp.service.MemoService;
 import com.example.bookshelfapp.service.ProjectWorkspaceService;
@@ -145,5 +147,24 @@ public class ProjectWorkspaceController {
 			memoService.deleteMemo(projectId, memoId);
 
 			return "redirect:/projects/" + projectId + "/workspace?view=memos";
+		}
+	/**
+     * プロジェクト詳細画面
+     * からメモ編集画面へ
+	 * 
+     */
+	@GetMapping("/projects/{projectId}/memos/{memoId}/edit")
+	public String showMemoEditForm(
+		@PathVariable Integer projectId,
+		@PathVariable Integer memoId,
+		Model model){
+
+			MemoEditForm memoEditForm = memoService.getMemoEditForm(projectId, memoId);
+			MemoEditDTO memoEditDTO = memoService.getMemoEditDTO(projectId, memoId);
+
+			model.addAttribute("memoEditForm",memoEditForm);
+			model.addAttribute("memoEditDTO", memoEditDTO);
+
+			return "projects/editMemo";
 		}
 }

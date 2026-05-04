@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>メモ編集</title>
+<link rel="stylesheet" th:href="@{/css/editMemo.css}">
+</head>
+<body>
+
+<header class="page-header">
+    <div>
+        <h1>メモ編集画面</h1>
+    </div>
+
+    <nav class="top-nav">
+        <span class="project-name" th:text="${memoEditDTO.project.projectName}"></span>
+        <a th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='shelf')}">作業画面</a>
+        <a th:href="@{/projects}">一覧画面</a>
+        <a href="#">ログアウト</a>
+    </nav>
+</header>
+
+<div class="layout">
+
+    <aside class="side-nav">
+        <h2>■作業</h2>
+
+        <div class="nav-section">
+            <p class="nav-heading">プロジェクト全体</p>
+            <div th:each="memo : ${memoEditDTO.allMemos}">
+                <a th:href="@{/projects/{projectId}/memos/{memoId}/edit(projectId=${projectId}, memoId=${memo.id})}"
+                   th:text="'- 『' + ${memo.memoTitle} + '』'">
+                </a>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <p class="nav-heading">本</p>
+            <div th:each="memo : ${memoEditDTO.allMemos}">
+                <a th:href="@{/projects/{projectId}/memos/{memoId}/edit(projectId=${projectId}, memoId=${memo.id})}"
+                   th:text="'- 『' + ${memo.memoTitle} + '』'">
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="memo-editor">
+        <div class="memo-title-bar">
+            <span th:text="'『' + ${memoEditForm.memoTitle} + '』'"></span>
+        </div>
+
+        <form th:object="${memoEditForm}"
+              th:action="@{/projects/{projectId}/memos/{memoId}/edit(projectId=${projectId}, memoId=*{id})}"
+              method="post">
+
+            <input type="hidden" th:field="*{id}">
+
+            <textarea id="editMemoText"
+                      th:field="*{memoText}"
+                      class="memo-textarea"></textarea>
+
+            <div class="button-area">
+                <button type="submit">保存</button>
+            </div>
+        </form>
+    </main>
+
+</div>
+
+</body>
+</html>

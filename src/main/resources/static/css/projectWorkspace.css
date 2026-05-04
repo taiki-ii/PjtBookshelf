@@ -1,56 +1,279 @@
 @charset "UTF-8";
-.tab {
-    padding: 8px 12px;
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    color: #000;
+    background: #fff;
+}
+
+.page-header {
+    padding: 16px 36px 8px;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 40px;
+    font-weight: normal;
+}
+
+.page-header p {
+    margin: 4px 0 18px;
+    font-size: 36px;
+}
+
+.workspace-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    margin: 0 16px 16px;
+    border: 1px solid #333;
+    min-height: 560px;
+}
+
+.side-nav {
+    border-right: 1px solid #333;
+    padding: 16px 14px;
+    font-size: 20px;
+}
+
+.side-nav h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+}
+
+.side-section {
+    margin-bottom: 32px;
+}
+
+.side-nav a,
+.side-nav button {
+    display: block;
+    margin: 4px 0;
+    color: #000;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 20px;
     text-decoration: none;
-    color: black;
-    border: 1px solid #ccc;
-    display: inline-block;
+    cursor: pointer;
+}
+
+.side-nav a:hover,
+.side-nav button:hover {
+    text-decoration: underline;
+}
+
+.workspace-main {
+    display: flex;
+    flex-direction: column;
+}
+
+.top-menu {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    min-height: 48px;
+}
+
+.search-box {
+    flex: 1;
+    padding: 8px 16px;
+    font-size: 20px;
+}
+
+.top-menu a {
+    padding: 12px 20px;
+    border-left: 1px solid #333;
+    color: #000;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.content-header {
+    padding: 12px 16px 0;
+    border-bottom: 1px solid #333;
+}
+
+.content-header h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+}
+
+.tab-area {
+    display: flex;
+}
+
+.tab {
+    min-width: 110px;
+    padding: 8px 18px;
+    border: 1px solid #333;
+    border-bottom: none;
+    color: #000;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
 }
 
 .active {
-    background-color: #ddd;
+    background-color: #edff2f;
     font-weight: bold;
 }
 
+.content-body {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 20px;
+    padding: 16px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 24px;
+}
+
+.book-card,
+.memo-card {
+    min-height: 170px;
+    border: 1px solid #666;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.book-title,
+.memo-title {
+    padding: 8px;
+    border-bottom: 1px solid #999;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.book-body,
+.memo-preview {
+    flex: 1;
+    padding: 10px;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.memo-actions {
+    display: flex;
+    border-top: 1px solid #999;
+}
+
+.memo-actions button,
+.memo-actions a {
+    flex: 1;
+    padding: 4px;
+    border: none;
+    border-right: 1px solid #999;
+    background: #fff;
+    color: #000;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.memo-actions a:last-child {
+    border-right: none;
+}
+
+.action-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+}
+
+.action-button {
+    display: block;
+    padding: 10px 14px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    background: #fff;
+    color: #000;
+    font-size: 28px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.action-button:hover {
+    background: #f5f5f5;
+}
+
+.info-area {
+    padding: 12px 16px;
+    border-top: 1px solid #333;
+    display: flex;
+    gap: 24px;
+    font-size: 16px;
+}
+
+/* 旧モーダル */
 .bookModal {
     display: none;
     position: fixed;
-    top: 20%;
+    top: 18%;
     left: 50%;
     transform: translateX(-50%);
-    width: 400px;
+    width: 420px;
     padding: 20px;
     background-color: white;
     border: 1px solid #333;
     z-index: 1000;
-    }
+}
 
 .modalOverlay {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 999;
-    }
+}
 
+/* dialog */
 dialog {
-    border: none;
-    border-radius: 8px;
-    padding: 20px;
-    width: 400px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid #333;
+    padding: 0;
+    width: 560px;
+    min-height: 320px;
+    background: #fff;
 }
 
 dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
-    backdrop-filter: blur(2px); /* 背景を少しぼかす */
+    background-color: rgba(0, 0, 0, 0.35);
 }
 
-dialog h2 {
-    margin-top: 0;
-    color: #333;
+.modalHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #333;
+    padding: 8px 12px;
+    font-size: 18px;
 }
-    
+
+.modalHeader span {
+    flex: 1;
+}
+
+.memoViewMode {
+    padding: 16px;
+    min-height: 220px;
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.memoEditMode {
+    padding: 16px;
+}
+
+.memoEditMode textarea {
+    width: 100%;
+    height: 220px;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1.6;
+}

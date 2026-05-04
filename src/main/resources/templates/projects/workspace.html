@@ -8,215 +8,264 @@
 <link rel="stylesheet" th:href="@{/css/projectWorkspace.css}">
 </head>
 <body>
-	<h1>プロジェクト詳細</h1>
-	<h1 th:text="${workspace.project.projectName}"></h1>
-	
-	<hr>
-	
-	<div th:if="${view == 'shelf'}">
-		<h2>作業棚</h2>
-		
-		<h3>最近の本</h3>
-		<div th:each="book : ${workspace.recentBooks}">
-			<span th:text="${book.bookTitle}"></span>
-		</div>
-	
-		<h3>最近のメモ</h3>
-		<div th:each="memo : ${workspace.recentMemos}">
-			<span th:text="${memo.memoTitle}"></span></br>
-			<span th:text="${memo.memoText}"></span></br>
-		</div>	
-		<hr>
-		
-		<a th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='shelf', scope='all')}">
-			全件表示
-		</a>
-	</div>
-	
-	<div th:if="${view == 'books'}">
-	    <h2>本一覧</h2>
-	    <div th:each="book : ${workspace.allBooks}">
-	        <span th:text="${book.bookTitle}"></span>
-	    </div>
-	</div>
-	
-	<div th:if="${view == 'memos'}">
-	    <h2>メモ一覧</h2>
-	    <div th:each="memo : ${workspace.allMemos}">
-	        <span th:text="${memo.memoText}"></span>
-	    </div>
-	</div>
-	
-	<div th:if="${view == 'details'}">
-	    <h2>詳細</h2>
-	    <table>
-	        <tr th:each="book : ${workspace.allBooks}">
-	            <td th:text="${book.bookTitle}"></td>
-	            <td th:text="${book.author}"></td>
-	        </tr>
-	    </table>
-	</div>
-	
-	<p>本件数：<span th:text="${workspace.bookCount}"></span></p>
-	<p>メモ件数：<span th:text="${workspace.memoCount}"></span></p>
-	<p>最終更新日時：<span th:text="${#temporals.format(workspace.updatedAt, 'yyyy/MM/dd HH:mm')}"></span></p>
-	
-	<hr>
-	
-	<!-- 表示タブ切替 -->
-	<div>
-		<a class="tab"
-		   th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='shelf')}"
-       	   th:classappend="${view == 'shelf'} ? ' active' : ''">作業棚</a>
-		<a class="tab"
-		   th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='books')}"
-	       th:classappend="${view == 'books'} ? ' active' : ''">本</a>
-	
-	    <a class="tab"
-	       th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='memos')}"
-	       th:classappend="${view == 'memos'} ? ' active' : ''">メモ</a>
-	
-	    <a class="tab"
-	       th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='details')}"
-	       th:classappend="${view == 'details'} ? ' active' : ''">詳細</a>  
-     </div>
-     
-     <hr>
-     
-	 <!-- 本追加モーダル -->
-	<button type="button" id="openBookModal">本追加</button>
-	
-		<div id="modalOverlay" class="modalOverlay"></div>
-		
-		<div id="bookModal" class="bookModal"
-			 th:style="${isBookModalOpen} ? 'display:block;' : 'display:none;'">
-		    <h2>本追加モーダル</h2>
-		    <p>手動入力</p>
-		    <form th:action="@{/projects/{projectId}/books(projectId=${projectId})}"
-		    	  th:object="${bookCreateForm}" 
-		    	  method="post">
-		    		<label for="bookTitle">題名</label>
-		    	  	<input type="text" id="bookTitle" th:field="*{bookTitle}"></br>
-					<div th:if="${#fields.hasErrors('bookTitle')}" th:errors="*{bookTitle}" style="color:red;"></div>
-		    	  	<label for="author">作者</label>
-		    	  	<input type="text" id="author" th:field="*{author}"></br>
-		    	  	<label for="company">出版社</label>
-		    	  	<input type="text" id="company" th:field="*{company}"></br>
-		    	  	<label for="publicationDate">出版日</label>
-		    	  	<input type="date" id="publicationDate" th:field="*{publicationDate}"></br>
-		    		<button type="submit">追加</button></br>
-		    </form>
-		    <button type="button" id="closeBookModal">閉じる</button>
-		</div>
-		
-		<hr>
-		
-		<!-- 本削除モーダル -->
-		<button type="button" id="openBookDeleteModal">本削除</button>
-		
-			<div id="deleteModalOverlay" class="modalOverlay"></div>
+	<header class="page-header">
+		<h1>プロジェクト詳細</h1>
+		<h1 th:text="${workspace.project.projectName}"></h1>
+	</header>
 
-			<div id="bookDeleteModal" class="bookModal"
-				 th:style="${isBookModalOpen} ? 'display:block' : 'display:none;'">
-				<h2>本削除モーダル</h2>	
-				<form id="bookDeleteForm"
-					  th:action="@{/projects/{projectId}/books/delete(projectId=${projectId})}"
-					  method="post">
-					<label for="deleteBookId">削除する本</label>
-					<select id="deleteBookId" name="bookId">
-						<option value="">選択してください</option>
-						<option th:each="book : ${workspace.allBooks}"
-								th:value="${book.id}"
-								th:text="${book.bookTitle}"
-								th:data-has-memos="${book.memos.size() > 0}">
-						</option>
-					</select>
+	<div class="workspace-layout">
+		<aside class="side-nav">
+			<div class="side-section">
+				<h2>■作業</h2>
+				<a href="#">メイン作業</a>
+				<a href="#">プロジェクトメモ</a>
+			</div>
+			<div class="side-section">
+				<h2>■操作</h2>
+				<button type="button" class="openBookModalBtn">- 本追加</button>
+				<button type="button" class="openBookDeleteModalBtn">- 本削除</button>
+				<button type="button" class="openMemoModalBtn">- メモ追加</button>
+				<button type="button" class="openMemoDeleteDialogBtn">- メモ削除</button>
+			</div>
+			<div class="side-section">
+				<h2>■情報</h2>
+				<p>本冊数：<span th:text="${workspace.bookCount}"></span></p>
+				<p>メモ数：<span th:text="${workspace.memoCount}"></span></p>
+				<p>最終更新日時：<span th:text="${#temporals.format(workspace.updatedAt, 'yyyy/MM/dd HH:mm')}"></span></p>
+			</div>
+		</aside>
+
+		<main class="workspace-main">
+
+			<nav class="top-menu">
+				<div class="search-box">本検索 🔍</div>
+				<a th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='shelf')}">作業画面</a>
+				<a th:href="@{/projects}">一覧画面</a>
+				<a href="#">ログアウト</a>
+			</nav>
+
+			<section class="content-header">
+				<h2>■表示</h2>
+				<div class="tab-area">
+					<a class="tab" th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='shelf')}"
+					th:classappend="${view == 'shelf'} ? ' active' : ''">作業棚</a>
+					<a class="tab" th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='books')}"
+					th:classappend="${view == 'books'} ? ' active' : ''">本</a>
+					<a class="tab" th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='memos')}"
+					th:classappend="${view == 'memos'} ? ' active' : ''">メモ</a>
+					<a class="tab" th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='details')}"
+					th:classappend="${view == 'details'} ? ' active' : ''">詳細</a>
+				</div>
+			</section>
+
+			<section class="content-body">
+
+				<div>
+					<div th:if="${view == 'shelf'}" class="card-grid">
+						<div class="book-card" th:each="book : ${workspace.recentBooks}">
+							<div class="book-title" th:text="${book.bookTitle}"></div>
+							<div class="book-body">本</div>
+						</div>
+
+						<div class="memo-card" th:each="memo : ${workspace.recentMemos}">
+							<div class="memo-title" th:text="${memo.memoTitle}"></div>
+							<div class="memo-preview" th:text="${memo.memoText}"></div>
+						</div>
+					</div>
+
+				<div>
+					<div th:if="${view == 'books'}" class="card-grid">
+						<div class="book-card" th:each="book : ${workspace.allBooks}">
+							<div class="book-title" th:text="${book.bookTitle}"></div>
+							<div class="book-body">本</div>
+						</div>
+					</div>
+				</div>
+
+					<div th:if="${view == 'memos'}" class="card-grid">
+						<div class="memo-card" th:each="memo : ${workspace.allMemos}">
+							<div class="memo-title" th:text="${memo.memoTitle}"></div>
+							<div class="memo-preview" th:text="${memo.memoText}"></div>
+							<div class="memo-actions">
+								<button type="button" class="memoPreviewModalBtn">プレビュー</button>
+								<a th:href="@{/projects/{projectId}/memos/{memoId}/edit(projectId=${projectId}, memoId=${memo.id})}">
+									✎編集
+								</a>
+							</div>
+							<dialog class="memoCardModal">
+							<!-- ヘッダー -->
+							<div class="modalHeader">
+								<span th:text="${memo.memoTitle}"></span>
+								<button type="button" class="memoEditBtn">✎編集</button>
+								<button type="button" class="closeMemoCardModal">✕</button>
+							</div>
+
+							<!-- 表示モード -->
+							<div class="memoViewMode">
+								<p th:text="${memo.memoText}"></p>
+							</div>
+
+							<!-- 編集モード -->
+							<div class="memoEditMode" style="display:none;">
+								<form th:action="@{/projects/{projectId}/memos/{memoId}/edit(projectId=${projectId}, memoId=${memo.id})}"
+									method="post">
+									<input type="hidden" name="returnTo" value="workspace">
+									<textarea name="memoText"
+									th:text="${memo.memoText}"></textarea>
+
+									<button type="submit">保存</button>
+								</form>
+							</div>
+						</dialog>
+					</div>
+				</div>
+					<div>
+						<div th:if="${view == 'details'}">
+								<h2>詳細</h2>
+								<table>
+									<tr  th:each="book : ${workspace.allBooks}">
+										<td th:text="${book.bookTitle}"></td>
+										<td th:text="${book.author}"></td>
+									</tr>
+								</table>
+						</div>
+					</div>
 					
-					<button type="submit" id="bookDeleteButton">削除</button></br>
-				</form>
-				<button type="button" id="closeBookDeleteModal">閉じる</button>
-			</div> 
+							<!-- 本追加モーダル -->
+							<div id="modalOverlay" class="modalOverlay"></div>
+							
+							<div id="bookModal" class="bookModal"
+								th:style="${isBookModalOpen} ? 'display:block;' : 'display:none;'">
+								<h2>本追加モーダル</h2>
+								<p>手動入力</p>
+								<form th:action="@{/projects/{projectId}/books(projectId=${projectId})}"
+									th:object="${bookCreateForm}" 
+									method="post">
+										<label for="bookTitle">題名</label>
+										<input type="text" id="bookTitle" th:field="*{bookTitle}"></br>
+										<div th:if="${#fields.hasErrors('bookTitle')}" th:errors="*{bookTitle}" style="color:red;"></div>
+										<label for="author">作者</label>
+										<input type="text" id="author" th:field="*{author}"></br>
+										<label for="company">出版社</label>
+										<input type="text" id="company" th:field="*{company}"></br>
+										<label for="publicationDate">出版日</label>
+										<input type="date" id="publicationDate" th:field="*{publicationDate}"></br>
+										<button type="submit">追加</button></br>
+								</form>
+								<button type="button" id="closeBookModal">閉じる</button>
+							</div>
 
-		<hr>
+							<!-- 本削除モーダル -->
+							<div id="deleteModalOverlay" class="modalOverlay"></div>
+							<div id="bookDeleteModal" class="bookModal"
+								th:style="${isBookModalOpen} ? 'display:block' : 'display:none;'">
+								<h2>本削除モーダル</h2>	
+								<form id="bookDeleteForm"
+									th:action="@{/projects/{projectId}/books/delete(projectId=${projectId})}"
+									method="post">
+									<label for="deleteBookId">削除する本</label>
+									<select id="deleteBookId" name="bookId">
+										<option value="">選択してください</option>
+										<option th:each="book : ${workspace.allBooks}"
+												th:value="${book.id}"
+												th:text="${book.bookTitle}"
+												th:data-has-memos="${book.memos.size() > 0}">
+										</option>
+									</select>
+									
+									<button type="submit" id="bookDeleteButton">削除</button></br>
+								</form>
+								<button type="button" id="closeBookDeleteModal">閉じる</button>
+							</div> 
+							<!-- メモ追加モーダル -->
+							<div th:if="${errorMessage}" style="color: red;">
+							<span th:text="${errorMessage}"></span>
+							</div>
+							<div>
+								<dialog id="memoDialog">
+								<h2>メモ追加モーダル</h2>
+									<form id="memoModal"
+										th:action="@{/projects/{projectId}/memos(projectId=${projectId})}"
+										method="post">
+										<label for="connectBookId">本に紐づけて追加</label>
+										<select id="connectBookId" name="bookId">
+											<option value="">選択してください</option>
+											<option th:each="book : ${workspace.allBooks}"
+													th:value="${book.id}"
+													th:text="${book.bookTitle}">
+											</option>
+										</select>
 
-		<!-- メモ追加モーダル -->
-		<button id="openMemoModal">メモ追加</button></br>
-		<div th:if="${errorMessage}" style="color: red;">
-			<span th:text="${errorMessage}"></span>
-		</div>
-		<div>
-			<dialog id="memoDialog">
-			<h2>メモ追加モーダル</h2>
-				<form id="memoModal"
-					th:action="@{/projects/{projectId}/memos(projectId=${projectId})}"
-					method="post">
-					<label for="connectBookId">本に紐づけて追加</label>
-					<select id="connectBookId" name="bookId">
-						<option value="">選択してください</option>
-						<option th:each="book : ${workspace.allBooks}"
-								th:value="${book.id}"
-								th:text="${book.bookTitle}">
-						</option>
-					</select>
+										<button type="submit" id="memoCreateButton">追加</button><br>
+									</form>
+									<button id="closeMemoModal">閉じる</button>
+								</dialog>
+							</div>
+							<!-- メモ削除モーダル -->
+							<div>
+								<dialog id="memoDeleteDialog">
+									<h2>メモ削除モーダル</h2>
+									<form id="memoDeleteModal"
+										th:action="@{/projects/{projectId}/memos/{memoId}/delete(projectId=${projectId})}"
+										method="post">
+										<label for="connectedBookId">本に紐づけたメモを削除</label>
+									<select name="memoId">
+										<option>選択してください</option>
+										<option th:each="memo : ${workspace.bookLinkedMemos}"
+												th:text="${memo.memoTitle}"
+												th:value="${memo.id}">
+										</option>
+									</select>
 
-					<button type="submit" id="memoCreateButton">追加</button><br>
-				</form>
-				<button id="closeMemoModal">閉じる</button>
-			</dialog>
-		</div>
+										<button type="submit" id="memoDeleteButton">削除</button></br>
+									</form>
+									<button id="closeMemoDeleteDialog">閉じる</button>
+								</dialog>
+							</div>						
+						</div>
+					</div>
+				</div>
 
-		<hr>
+				<aside class="action-panel">
+					<button type="button" class="action-button openBookModalBtn">＋ 本追加</button>
+					<button type="button" class="action-button openMemoModalBtn">＋ メモ追加</button>
+				</aside>
 
-		<!-- メモ削除モーダル -->
-		<button id="openMemoDeleteDialog">メモ削除</button></br>
-		<div>
-			<dialog id="memoDeleteDialog">
-				<h2>メモ削除モーダル</h2>
-				<form id="memoDeleteModal"
-					th:action="@{/projects/{projectId}/memos/{memoId}/delete(projectId=${projectId})}"
-					method="post">
-					<label for="connectedBookId">本に紐づけたメモを削除</label>
-				<select name="memoId">
-					<option>選択してください</option>
-					<option th:each="memo : ${workspace.bookLinkedMemos}"
-							th:text="${memo.memoTitle}"
-							th:value="${memo.id}">
-					</option>
-				</select>
-
-					<button type="submit" id="memoDeleteButton">削除</button></br>
-				</form>
-				<button id="closeMemoDeleteDialog">閉じる</button>
-			</dialog>
-		</div>
+			</section>
+    	</main>
+	</div>
 
 	<script>
 		// 本追加モーダル制御
-	    const openBookModalButton = document.getElementById('openBookModal');
-	    const closeBookModalButton = document.getElementById('closeBookModal');
-	    const bookModal = document.getElementById('bookModal');
-	    const modalOverlay = document.getElementById('modalOverlay');
-	    
-	    openBookModalButton.addEventListener('click', () => {
-	        bookModal.style.display = 'block';
-	        modalOverlay.style.display = 'block';
-	    });
-	    closeBookModalButton.addEventListener('click', () => {
-	        bookModal.style.display = 'none';
-	        modalOverlay.style.display = 'none';
-	    });
-	    
-	    // 本削除モーダル制御
-	    const openBookDeleteModalButton = document.getElementById('openBookDeleteModal');
-	    const closeBookDeleteModalButton = document.getElementById('closeBookDeleteModal');
-	    const bookDeleteModal = document.getElementById('bookDeleteModal');
-	    const deleteModalOverlay = document.getElementById('deleteModalOverlay');
-	    
-	    openBookDeleteModalButton.addEventListener('click' , () =>{
-			bookDeleteModal.style.display = 'block';
-			deleteModalOverlay.style.display = 'block';
+		const closeBookModalButton = document.getElementById('closeBookModal');
+		const bookModal = document.getElementById('bookModal');
+		const modalOverlay = document.getElementById('modalOverlay');
+
+		document.querySelectorAll('.openBookModalBtn').forEach((button) => {
+			button.addEventListener('click', () => {
+				bookModal.style.display = 'block';
+				modalOverlay.style.display = 'block';
+			});
 		});
-		closeBookDeleteModalButton.addEventListener('click' , () =>{
+
+		closeBookModalButton.addEventListener('click', () => {
+			bookModal.style.display = 'none';
+			modalOverlay.style.display = 'none';
+		});
+	    
+		// 本削除モーダル制御
+		const closeBookDeleteModalButton = document.getElementById('closeBookDeleteModal');
+		const bookDeleteModal = document.getElementById('bookDeleteModal');
+		const deleteModalOverlay = document.getElementById('deleteModalOverlay');
+
+		document.querySelectorAll('.openBookDeleteModalBtn').forEach((button) => {
+			button.addEventListener('click', () => {
+				bookDeleteModal.style.display = 'block';
+				deleteModalOverlay.style.display = 'block';
+			});
+		});
+
+		closeBookDeleteModalButton.addEventListener('click', () => {
 			bookDeleteModal.style.display = 'none';
 			deleteModalOverlay.style.display = 'none';
 		});
@@ -252,27 +301,59 @@
 
 		// メモ追加モーダル制御
 		const dialog = document.getElementById("memoDialog");
-		const openButton = document.getElementById("openMemoModal");
-		const closeButton = document.getElementById("closeMemoModal");		
+		const closeButton = document.getElementById("closeMemoModal");
 
-		openButton.addEventListener("click", () => {
-			dialog.showModal();
+		document.querySelectorAll('.openMemoModalBtn').forEach((button) => {
+			button.addEventListener("click", () => {
+				dialog.showModal();
+			});
 		});
-		closeButton.addEventListener("click", () =>{
+
+		closeButton.addEventListener("click", () => {
 			dialog.close();
 		});
 		
 		// メモ削除モーダル制御
-		const openMemoDeleteDialog = document.getElementById("openMemoDeleteDialog");
 		const closeMemoDeleteDialog = document.getElementById("closeMemoDeleteDialog");
 		const memoDeleteDialog = document.getElementById("memoDeleteDialog");
 
-		openMemoDeleteDialog.addEventListener('click' , () =>{
-			memoDeleteDialog.showModal();
-		})
-		closeMemoDeleteDialog.addEventListener('click' , () =>{
+		document.querySelectorAll('.openMemoDeleteDialogBtn').forEach((button) => {
+			button.addEventListener('click', () => {
+				memoDeleteDialog.showModal();
+			});
+		});
+
+		closeMemoDeleteDialog.addEventListener('click', () => {
 			memoDeleteDialog.close();
-		})
+		});
+
+		// メモカードプレビューモーダル制御
+		// メモカード上の編集制御
+		document.querySelectorAll(".memoPreviewModalBtn").forEach((button) => {
+			button.addEventListener("click", () => {
+				const memoCard = button.closest(".memo-card");
+				const modal = memoCard.querySelector(".memoCardModal");
+				modal.showModal();
+			});
+		});
+
+		document.querySelectorAll(".closeMemoCardModal").forEach((button) => {
+			button.addEventListener("click", () => {
+				const modal = button.closest(".memoCardModal");
+				modal.close();
+			});
+		});
+
+		document.querySelectorAll(".memoEditBtn").forEach((button) => {
+			button.addEventListener("click", () => {
+				const modal = button.closest(".memoCardModal");
+				const viewMode = modal.querySelector(".memoViewMode");
+				const editMode = modal.querySelector(".memoEditMode");
+
+				viewMode.style.display = "none";
+				editMode.style.display = "block";
+			});
+		});
 	</script>
 	
 </body>

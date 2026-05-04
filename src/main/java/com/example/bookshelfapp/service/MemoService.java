@@ -1,12 +1,15 @@
 package com.example.bookshelfapp.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.bookshelfapp.dto.MemoEditDTO;
 import com.example.bookshelfapp.entity.Book;
 import com.example.bookshelfapp.entity.Memo;
 import com.example.bookshelfapp.entity.Project;
+import com.example.bookshelfapp.form.MemoEditForm;
 import com.example.bookshelfapp.repository.BookRepository;
 import com.example.bookshelfapp.repository.MemoRepository;
 import com.example.bookshelfapp.repository.ProjectRepository;
@@ -58,6 +61,51 @@ public class MemoService {
     	}
 
 		memoRepository.delete(memo);
+	}
+
+	public MemoEditForm getMemoEditForm(Integer projectId, Integer memoId){
+		Memo memo = memoRepository.findById(memoId)
+			.orElseThrow(() -> new IllegalArgumentException("メモが存在しません"));
+
+		if(!memo.getProject().getId().equals(projectId)){
+			throw new IllegalArgumentException("指定プロジェクトに属さないメモです");
+		}
+
+		MemoEditForm form = new MemoEditForm();
+		form.setId(memoId);
+		form.setMemoTitle(memo.getMemoTitle());
+		form.setMemoText(memo.getMemoText());
+
+		return form;
+	}
+
+	public MemoEditDTO getMemoEditDTO(Integer projectId, Integer memoId){
+		Project project = projectRepository.findById(projectId)
+				.orElseThrow(() ->new IllegalArgumentException("プロジェクトが存在しません"));
+		
+		Memo selectedMemo = memoRepository.findById(memoId)
+			.orElseThrow(() -> new IllegalArgumentException("メモが存在しません"));
+
+		if(!selectedMemo.getProject().getId().equals(projectId)){
+			throw new IllegalArgumentException("指定プロジェクトに属さないメモです");
+		}
+
+		List<Memo> allMemos = memoRepository.findByProjectId(projectId);
+	
+		return new MemoEditDTO(project, allMemos, selectedMemo);
+	}
+
+	public void editMemo(Integer projectId, Integer memoId, MemoEditForm memoEditForm){
+		Memo memo = memoRepository.findById(memoId)
+			.orElseThrow(() -> new IllegalArgumentException("メモが存在しません"));
+
+		if(!memo.getProject().getId().equals(projectId)){
+			throw new IllegalArgumentException("指定プロジェクトに属さないメモです");
+		}
+
+		memo.setMemoText(memoEditForm.getMemoText());
+		
+		memoRepository.save(memo);
 	}
 
 }
