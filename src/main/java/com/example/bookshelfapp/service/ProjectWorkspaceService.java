@@ -21,15 +21,18 @@ public class ProjectWorkspaceService {
 	private final BookRepository bookRepository;
 	private final MemoRepository memoRepository;
 	//private final UserRepository userRepository;
+	private final MemoService memoService;
 	
 	public ProjectWorkspaceService(ProjectRepository projectRepository,
 								   BookRepository bookRepository,
 								   MemoRepository memoRepository,
-								   UserRepository userRepository) {
+								   UserRepository userRepository,
+								   MemoService memoService) {
 		this.projectRepository = projectRepository;
 		this.bookRepository = bookRepository;
 		this.memoRepository = memoRepository;
 		//this.userRepository = userRepository;
+		this.memoService = memoService;
 	}
 	
 	public WorkspaceDTO getWorkspaceInfo(Integer projectId) {
@@ -44,7 +47,9 @@ public class ProjectWorkspaceService {
 		List<Memo> recentMemos = memoRepository.findTop3ByProjectIdOrderByUpdatedAtDesc(projectId);
 		// 本と紐づくメモ取得
 		List<Memo> bookLinkedMemos = memoRepository.findByProject_IdAndBookIsNotNull(projectId);
-		
+		// メイン作業・プロジェクトメモ取得
+		Memo mainWorkMemo = memoService.getMainWorkMemo(projectId);
+		Memo projectMemo = memoService.getProjectMemo(projectId);
 		
 		// 本・メモ数取得
 	    long bookCount = bookRepository.countByProjectId(projectId);
@@ -52,6 +57,6 @@ public class ProjectWorkspaceService {
 	    // プロジェクト最終更新日時取得
 	    LocalDateTime updatedAt = project.getUpdatedAt();
 	    
-		return new WorkspaceDTO(project, recentBooks, recentMemos, allBooks, allMemos, bookLinkedMemos, bookCount, memoCount, updatedAt);
+		return new WorkspaceDTO(project, recentBooks, recentMemos, allBooks, allMemos, bookLinkedMemos, mainWorkMemo, projectMemo, bookCount, memoCount, updatedAt);
 	}
 }

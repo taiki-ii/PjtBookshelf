@@ -9,6 +9,7 @@ import com.example.bookshelfapp.dto.MemoEditDTO;
 import com.example.bookshelfapp.entity.Book;
 import com.example.bookshelfapp.entity.Memo;
 import com.example.bookshelfapp.entity.Project;
+import com.example.bookshelfapp.enums.MemoType;
 import com.example.bookshelfapp.form.MemoEditForm;
 import com.example.bookshelfapp.repository.BookRepository;
 import com.example.bookshelfapp.repository.MemoRepository;
@@ -39,6 +40,7 @@ public class MemoService {
             
 		Memo memo = new Memo();
 		memo.setMemoTitle(memoTitle);
+		memo.setMemoType(MemoType.BOOK_MEMO);
 		memo.setBook(book);
 		memo.setProject(project);
         memo.setMemoText(memoTitle + "の作業メモです。");   
@@ -106,6 +108,16 @@ public class MemoService {
 		memo.setMemoText(memoEditForm.getMemoText());
 		
 		memoRepository.save(memo);
+	}
+	
+	public Memo getMainWorkMemo(Integer projectId) {
+		return memoRepository.findByProject_IdAndMemoType(projectId, MemoType.MAIN_WORK)
+				.orElseThrow(() -> new IllegalArgumentException("メイン作業メモが存在しません"));
+	}
+	
+	public Memo getProjectMemo(Integer projectId) {
+		return memoRepository.findByProject_IdAndMemoType(projectId, MemoType.PROJECT_MEMO)
+				.orElseThrow(() -> new IllegalArgumentException("プロジェクトメモが存在しません"));
 	}
 
 }
