@@ -17,8 +17,8 @@
 		<aside class="side-nav">
 			<div class="side-section">
 				<h2>■作業</h2>
-				<a href="#">メイン作業</a>
-				<a href="#">プロジェクトメモ</a>
+				<a th:href="@{/projects/{projectId}/memos/{memoId}/edit(projectId=${projectId}, memoId=${workspace.mainWorkMemo.id})}">メイン作業</a>
+				<a th:href="@{/projects/{projectId}/memos/{memoId}/edit(projectId=${projectId}, memoId=${workspace.projectMemo.id})}">プロジェクトメモ</a>
 			</div>
 			<div class="side-section">
 				<h2>■操作</h2>

@@ -33,7 +33,7 @@ public class ProjectWorkspaceController {
 	}
 	
 	/**
-     * プロジェクト一覧画面
+     * プロジェクト詳細画面
      * 初期表示
 	 * 
      */

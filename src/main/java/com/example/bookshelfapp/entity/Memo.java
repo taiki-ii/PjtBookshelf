@@ -2,8 +2,12 @@ package com.example.bookshelfapp.entity;
 
 import java.time.LocalDateTime;
 
+import com.example.bookshelfapp.enums.MemoType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,6 +33,10 @@ public class Memo {
 
     @Column(name = "memo_title", nullable = false, length = 255)
     private String memoTitle;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "memo_type" , nullable = false)
+    private MemoType memoType;
     
     @Column(name = "memo_text", nullable = false, length = 30000)
     private String memoText;
@@ -73,6 +81,14 @@ public class Memo {
     public void setMemoTitle(String memoTitle) {
         this.memoTitle = memoTitle;
     }    
+    
+    public MemoType getMemoType() {
+    	return memoType;
+    }
+    
+    public void setMemoType(MemoType memoType) {
+    	this.memoType = memoType;
+    }
 
     public String getMemoText() {
         return memoText;

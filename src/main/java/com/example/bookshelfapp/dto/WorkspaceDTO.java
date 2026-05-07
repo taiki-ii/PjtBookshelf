@@ -15,6 +15,8 @@ public class WorkspaceDTO {
 	private List<Book> allBooks;
 	private List<Memo> allMemos;
 	private List<Memo> bookLinkedMemos;
+    private Memo mainWorkMemo;
+    private Memo projectMemo;
 	private long bookCount;
 	private long memoCount;
 	private LocalDateTime updatedAt;
@@ -26,6 +28,8 @@ public class WorkspaceDTO {
 				List<Book> allBooks, 
 				List<Memo> allMemos,
                 List<Memo> bookLinkedMemos, 
+                Memo mainWorkMemo,
+                Memo projectMemo,
 				long bookCount, 
 				long memoCount, 
 				LocalDateTime updatedAt) {
@@ -35,6 +39,8 @@ public class WorkspaceDTO {
 		this.allBooks = allBooks;
 		this.allMemos = allMemos;
         this.bookLinkedMemos = bookLinkedMemos;
+        this.mainWorkMemo = mainWorkMemo;
+        this.projectMemo = projectMemo;
         this.bookCount = bookCount;
         this.memoCount = memoCount;
         this.updatedAt = updatedAt;
@@ -62,6 +68,14 @@ public class WorkspaceDTO {
 
     public List<Memo> getBookLinkedMemos(){
         return bookLinkedMemos;
+    }
+
+    public Memo getMainWorkMemo(){
+        return mainWorkMemo;
+    }
+
+    public Memo getProjectMemo(){
+        return projectMemo;
     }
     
     public long getBookCount() {
