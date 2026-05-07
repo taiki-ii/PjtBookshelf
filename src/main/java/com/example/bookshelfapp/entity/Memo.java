@@ -35,7 +35,7 @@ public class Memo {
     private String memoTitle;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "memo_type" , nullable = false)
+    @Column(name = "memo_type" , nullable = false, length = 50)
     private MemoType memoType;
     
     @Column(name = "memo_text", nullable = false, length = 30000)
