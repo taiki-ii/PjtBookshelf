@@ -82,6 +82,7 @@
 					</div>
 				</div>
 
+				<div>
 					<div th:if="${view == 'memos'}" class="card-grid">
 						<div class="memo-card" th:each="memo : ${workspace.allMemos}">
 							<div class="memo-title" th:text="${memo.memoTitle}"></div>
@@ -93,137 +94,140 @@
 								</a>
 							</div>
 							<dialog class="memoCardModal">
-							<!-- ヘッダー -->
-							<div class="modalHeader">
-								<span th:text="${memo.memoTitle}"></span>
-								<button type="button" class="memoEditBtn">✎編集</button>
-								<button type="button" class="closeMemoCardModal">✕</button>
-							</div>
+								<!-- ヘッダー -->
+								<div class="modalHeader">
+									<span th:text="${memo.memoTitle}"></span>
+									<button type="button" class="memoEditBtn">✎編集</button>
+									<button type="button" class="closeMemoCardModal">✕</button>
+								</div>
 
-							<!-- 表示モード -->
-							<div class="memoViewMode">
-								<p th:text="${memo.memoText}"></p>
-							</div>
+								<!-- 表示モード -->
+								<div class="memoViewMode">
+									<p th:text="${memo.memoText}"></p>
+								</div>
 
-							<!-- 編集モード -->
-							<div class="memoEditMode" style="display:none;">
-								<form th:action="@{/projects/{projectId}/memos/{memoId}/edit(projectId=${projectId}, memoId=${memo.id})}"
-									method="post">
-									<input type="hidden" name="returnTo" value="workspace">
-									<textarea name="memoText"
-									th:text="${memo.memoText}"></textarea>
+								<!-- 編集モード -->
+								<div class="memoEditMode" style="display:none;">
+									<form th:action="@{/projects/{projectId}/memos/{memoId}/edit(projectId=${projectId}, memoId=${memo.id})}"
+										method="post">
+										<input type="hidden" name="returnTo" value="workspace">
+										<textarea name="memoText"
+										th:text="${memo.memoText}"></textarea>
 
-									<button type="submit">保存</button>
-								</form>
-							</div>
-						</dialog>
+										<button type="submit">保存</button>
+									</form>
+								</div>
+							</dialog>
+						</div>
 					</div>
 				</div>
-					<div>
-						<div th:if="${view == 'details'}">
-								<h2>詳細</h2>
-								<table>
-									<tr  th:each="book : ${workspace.allBooks}">
-										<td th:text="${book.bookTitle}"></td>
-										<td th:text="${book.author}"></td>
-									</tr>
-								</table>
-						</div>
+				
+				<div>
+					<div th:if="${view == 'details'}">
+							<h2>詳細</h2>
+							<table>
+								<tr  th:each="book : ${workspace.allBooks}">
+									<td th:text="${book.bookTitle}"></td>
+									<td th:text="${book.author}"></td>
+								</tr>
+							</table>
 					</div>
+				</div>
+
+				<div>	
+					<!-- 本追加モーダル -->
+					<div id="modalOverlay" class="modalOverlay"></div>
 					
-							<!-- 本追加モーダル -->
-							<div id="modalOverlay" class="modalOverlay"></div>
-							
-							<div id="bookModal" class="bookModal"
-								th:style="${isBookModalOpen} ? 'display:block;' : 'display:none;'">
-								<h2>本追加モーダル</h2>
-								<p>手動入力</p>
-								<form th:action="@{/projects/{projectId}/books(projectId=${projectId})}"
-									th:object="${bookCreateForm}" 
-									method="post">
-										<label for="bookTitle">題名</label>
-										<input type="text" id="bookTitle" th:field="*{bookTitle}"></br>
-										<div th:if="${#fields.hasErrors('bookTitle')}" th:errors="*{bookTitle}" style="color:red;"></div>
-										<label for="author">作者</label>
-										<input type="text" id="author" th:field="*{author}"></br>
-										<label for="company">出版社</label>
-										<input type="text" id="company" th:field="*{company}"></br>
-										<label for="publicationDate">出版日</label>
-										<input type="date" id="publicationDate" th:field="*{publicationDate}"></br>
-										<button type="submit">追加</button></br>
-								</form>
-								<button type="button" id="closeBookModal">閉じる</button>
-							</div>
-
-							<!-- 本削除モーダル -->
-							<div id="deleteModalOverlay" class="modalOverlay"></div>
-							<div id="bookDeleteModal" class="bookModal"
-								th:style="${isBookModalOpen} ? 'display:block' : 'display:none;'">
-								<h2>本削除モーダル</h2>	
-								<form id="bookDeleteForm"
-									th:action="@{/projects/{projectId}/books/delete(projectId=${projectId})}"
-									method="post">
-									<label for="deleteBookId">削除する本</label>
-									<select id="deleteBookId" name="bookId">
-										<option value="">選択してください</option>
-										<option th:each="book : ${workspace.allBooks}"
-												th:value="${book.id}"
-												th:text="${book.bookTitle}"
-												th:data-has-memos="${book.memos.size() > 0}">
-										</option>
-									</select>
-									
-									<button type="submit" id="bookDeleteButton">削除</button></br>
-								</form>
-								<button type="button" id="closeBookDeleteModal">閉じる</button>
-							</div> 
-							<!-- メモ追加モーダル -->
-							<div th:if="${errorMessage}" style="color: red;">
-							<span th:text="${errorMessage}"></span>
-							</div>
-							<div>
-								<dialog id="memoDialog">
-								<h2>メモ追加モーダル</h2>
-									<form id="memoModal"
-										th:action="@{/projects/{projectId}/memos(projectId=${projectId})}"
-										method="post">
-										<label for="connectBookId">本に紐づけて追加</label>
-										<select id="connectBookId" name="bookId">
-											<option value="">選択してください</option>
-											<option th:each="book : ${workspace.allBooks}"
-													th:value="${book.id}"
-													th:text="${book.bookTitle}">
-											</option>
-										</select>
-
-										<button type="submit" id="memoCreateButton">追加</button><br>
-									</form>
-									<button id="closeMemoModal">閉じる</button>
-								</dialog>
-							</div>
-							<!-- メモ削除モーダル -->
-							<div>
-								<dialog id="memoDeleteDialog">
-									<h2>メモ削除モーダル</h2>
-									<form id="memoDeleteModal"
-										th:action="@{/projects/{projectId}/memos/{memoId}/delete(projectId=${projectId})}"
-										method="post">
-										<label for="connectedBookId">本に紐づけたメモを削除</label>
-									<select name="memoId">
-										<option>選択してください</option>
-										<option th:each="memo : ${workspace.bookLinkedMemos}"
-												th:text="${memo.memoTitle}"
-												th:value="${memo.id}">
-										</option>
-									</select>
-
-										<button type="submit" id="memoDeleteButton">削除</button></br>
-									</form>
-									<button id="closeMemoDeleteDialog">閉じる</button>
-								</dialog>
-							</div>						
-						</div>
+					<div id="bookModal" class="bookModal"
+						th:style="${isBookModalOpen} ? 'display:block;' : 'display:none;'">
+						<h2>本追加モーダル</h2>
+						<p>手動入力</p>
+						<form th:action="@{/projects/{projectId}/books(projectId=${projectId})}"
+							th:object="${bookCreateForm}" 
+							method="post">
+								<label for="bookTitle">題名</label>
+								<input type="text" id="bookTitle" th:field="*{bookTitle}"></br>
+								<div th:if="${#fields.hasErrors('bookTitle')}" th:errors="*{bookTitle}" style="color:red;"></div>
+								<label for="author">作者</label>
+								<input type="text" id="author" th:field="*{author}"></br>
+								<div th:if="${#fields.hasErrors('author')}" th:errors="*{author}" style="color:red"></div>
+								<label for="company">出版社</label>
+								<input type="text" id="company" th:field="*{company}"></br>
+								<label for="publicationDate">出版日</label>
+								<input type="date" id="publicationDate" th:field="*{publicationDate}"></br>
+								<button type="submit">追加</button></br>
+						</form>
+						<button type="button" id="closeBookModal">閉じる</button>
 					</div>
+
+					<!-- 本削除モーダル -->
+					<div id="deleteModalOverlay" class="modalOverlay"></div>
+					<div id="bookDeleteModal" class="bookModal"
+						th:style="${isBookModalOpen} ? 'display:block' : 'display:none;'">
+						<h2>本削除モーダル</h2>	
+						<form id="bookDeleteForm"
+							th:action="@{/projects/{projectId}/books/delete(projectId=${projectId})}"
+							method="post">
+							<label for="deleteBookId">削除する本</label>
+							<select id="deleteBookId" name="bookId">
+								<option value="">選択してください</option>
+								<option th:each="book : ${workspace.allBooks}"
+										th:value="${book.id}"
+										th:text="${book.bookTitle}"
+										th:data-has-memos="${book.memos.size() > 0}">
+								</option>
+							</select>
+							
+							<button type="submit" id="bookDeleteButton">削除</button></br>
+						</form>
+						<button type="button" id="closeBookDeleteModal">閉じる</button>
+					</div> 
+
+					<!-- メモ追加モーダル -->
+					<div th:if="${errorMessage}" style="color: red;">
+						<span th:text="${errorMessage}"></span>
+					</div>
+					<div>
+						<dialog id="memoDialog">
+						<h2>メモ追加モーダル</h2>
+							<form id="memoModal"
+								th:action="@{/projects/{projectId}/memos(projectId=${projectId})}"
+								method="post">
+								<label for="connectBookId">本に紐づけて追加</label>
+								<select id="connectBookId" name="bookId">
+									<option value="">選択してください</option>
+									<option th:each="book : ${workspace.allBooks}"
+											th:value="${book.id}"
+											th:text="${book.bookTitle}">
+									</option>
+								</select>
+
+								<button type="submit" id="memoCreateButton">追加</button><br>
+							</form>
+							<button id="closeMemoModal">閉じる</button>
+						</dialog>
+					</div>
+					<!-- メモ削除モーダル -->
+					<div>
+						<dialog id="memoDeleteDialog">
+							<h2>メモ削除モーダル</h2>
+							<form id="memoDeleteModal"
+								th:action="@{/projects/{projectId}/memos/{memoId}/delete(projectId=${projectId})}"
+								method="post">
+								<label for="connectedBookId">本に紐づけたメモを削除</label>
+							<select name="memoId">
+								<option>選択してください</option>
+								<option th:each="memo : ${workspace.bookLinkedMemos}"
+										th:text="${memo.memoTitle}"
+										th:value="${memo.id}">
+								</option>
+							</select>
+
+								<button type="submit" id="memoDeleteButton">削除</button></br>
+							</form>
+							<button id="closeMemoDeleteDialog">閉じる</button>
+						</dialog>
+					</div>						
 				</div>
 
 				<aside class="action-panel">
