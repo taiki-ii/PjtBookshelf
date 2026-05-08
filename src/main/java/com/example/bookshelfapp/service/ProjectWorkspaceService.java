@@ -49,7 +49,7 @@ public class ProjectWorkspaceService {
 		List<Memo> bookLinkedMemos = memoRepository.findByProject_IdAndBookIsNotNull(projectId);
 		// メイン作業・プロジェクトメモ取得
 		Memo mainWorkMemo = memoService.getMainWorkMemo(projectId);
-		Memo projectMemo = memoService.getProjectMemo(projectId);
+		Memo projectMemo = memoService.getMainWorkMemo(projectId);
 		
 		// 本・メモ数取得
 	    long bookCount = bookRepository.countByProjectId(projectId);
