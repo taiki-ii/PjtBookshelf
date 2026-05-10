@@ -136,7 +136,8 @@
 
 				<div>	
 					<!-- 本追加モーダル -->
-					<div id="modalOverlay" class="modalOverlay"></div>
+					<div id="modalOverlay" class="modalOverlay"
+					th:style="${isBookModalOpen} ? 'display:block;' : 'display:none;'"></div>
 					
 					<div id="bookModal" class="bookModal"
 						th:style="${isBookModalOpen} ? 'display:block;' : 'display:none;'">
@@ -163,7 +164,7 @@
 					<!-- 本削除モーダル -->
 					<div id="deleteModalOverlay" class="modalOverlay"></div>
 					<div id="bookDeleteModal" class="bookModal"
-						th:style="${isBookModalOpen} ? 'display:block' : 'display:none;'">
+						th:style="${isBookDeleteModalOpen} ? 'display:block' : 'display:none;'">
 						<h2>本削除モーダル</h2>	
 						<form id="bookDeleteForm"
 							th:action="@{/projects/{projectId}/books/delete(projectId=${projectId})}"
