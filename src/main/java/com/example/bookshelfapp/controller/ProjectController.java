@@ -40,7 +40,7 @@ public class ProjectController {
 	}
 	
     /**
-     * 作成ボタン押下時
+	 * プロジェクト新規作成
      * 
      */
 	@PostMapping("/create-new-project")
@@ -60,7 +60,7 @@ public class ProjectController {
 	}
 	
     /**
-     * 編集ボタン押下時
+     * プロジェクト一覧画面にて編集ボタン押下時
      * projectId を受け取り、
      * formクラス、Modelの順で値を詰め、
      * 対象データを編集フォームに反映させて一覧画面を再表示
