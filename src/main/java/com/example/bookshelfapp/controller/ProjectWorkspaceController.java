@@ -139,7 +139,7 @@ public class ProjectWorkspaceController {
      * メモ削除
 	 * 
      */
-	@PostMapping("/projects/{projectId}/memos/{memoId}/delete")
+	@PostMapping("/projects/{projectId}/memos/delete")
 	public String deleteMemo(
 		@PathVariable Integer projectId,
 		@RequestParam Integer memoId){
