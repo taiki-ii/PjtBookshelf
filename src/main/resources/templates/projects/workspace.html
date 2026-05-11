@@ -213,11 +213,13 @@
 						<dialog id="memoDeleteDialog">
 							<h2>メモ削除モーダル</h2>
 							<form id="memoDeleteModal"
-								th:action="@{/projects/{projectId}/memos/{memoId}/delete(projectId=${projectId})}"
+								th:action="@{/projects/{projectId}/memos/delete(projectId=${projectId})}"
 								method="post">
+
 								<label for="connectedBookId">本に紐づけたメモを削除</label>
-							<select name="memoId">
-								<option>選択してください</option>
+
+							<select name="memoId" id="connectedBookId">
+								<option value="">選択してください</option>
 								<option th:each="memo : ${workspace.bookLinkedMemos}"
 										th:text="${memo.memoTitle}"
 										th:value="${memo.id}">
@@ -317,7 +319,18 @@
 		closeButton.addEventListener("click", () => {
 			dialog.close();
 		});
-		
+
+		// メモ追加時、エラーメッセージ制御
+		const memoCreateButton = document.getElementById("memoCreateButton");
+		const connectBookSelect = document.getElementById("connectBookId");
+
+		memoCreateButton.addEventListener("click", (e) => {
+			if (!connectBookSelect.value) {
+				alert("本を選択してください");
+				e.preventDefault();
+			}
+		});
+
 		// メモ削除モーダル制御
 		const closeMemoDeleteDialog = document.getElementById("closeMemoDeleteDialog");
 		const memoDeleteDialog = document.getElementById("memoDeleteDialog");
@@ -331,6 +344,17 @@
 		closeMemoDeleteDialog.addEventListener('click', () => {
 			memoDeleteDialog.close();
 		});
+
+		// メモ削除時、エラーメッセージ制御
+		 const memoDeleteButton = document.getElementById("memoDeleteButton");
+		 const deleteMemoSelect = document.getElementById("connectedBookId");
+
+		 memoDeleteButton.addEventListener("click", (e) => {
+			 if (!deleteMemoSelect.value) {
+				 alert("削除するメモを選択してください");
+				 e.preventDefault();
+			 }
+		 });
 
 		// メモカードプレビューモーダル制御
 		// メモカード上の編集制御
