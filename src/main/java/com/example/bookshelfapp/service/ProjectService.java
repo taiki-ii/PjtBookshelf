@@ -19,10 +19,12 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final MemoService memoService;
 
-    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository) {
+    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository, MemoService memoService) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.memoService = memoService;
     }
 
     // プロジェクト一覧表示
@@ -43,6 +45,9 @@ public class ProjectService {
     	project.setUser(user);
     	
     	projectRepository.save(project);
+
+        memoService.createMainMemo(project);
+        memoService.createProjectMemo(project);
     }
     
     // プロジェクト一覧表示

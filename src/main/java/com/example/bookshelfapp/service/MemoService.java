@@ -118,6 +118,28 @@ public class MemoService {
 	public Memo getProjectMemo(Integer projectId) {
 		return memoRepository.findByProject_IdAndMemoType(projectId, MemoType.PROJECT_MEMO)
 				.orElseThrow(() -> new IllegalArgumentException("プロジェクトメモが存在しません"));
+	}	
+
+	public Memo createMainMemo(Project project) {
+    Memo mainMemo = new Memo();
+    mainMemo.setProject(project);
+    mainMemo.setMemoType(MemoType.MAIN_WORK);
+    mainMemo.setMemoTitle("メイン作業");
+	mainMemo.setMemoText("メイン作業のメモです。");
+	mainMemo.setCreatedAt(LocalDateTime.now());
+
+    return memoRepository.save(mainMemo);
+	}
+
+	public Memo createProjectMemo(Project project) {
+		Memo projectMemo = new Memo();
+		projectMemo.setProject(project);
+		projectMemo.setMemoType(MemoType.PROJECT_MEMO);
+		projectMemo.setMemoTitle("プロジェクトメモ");
+		projectMemo.setMemoText("プロジェクト管理のメモです。");
+		projectMemo.setCreatedAt(LocalDateTime.now());
+		
+		return memoRepository.save(projectMemo);
 	}
 
 }
