@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>本検索画面</title>
+<link rel="stylesheet" th:href="@{/css/editMemo.css}">
+</head>
+<body>
+    <header>
+        <div>
+            <h1>本検索画面</h1>
+        </div>
+
+        <nav class="top-nav">
+            <a th:href="@{/projects/{projectId}/workspace(projectId=${projectId}, view='shelf')}">作業画面</a>
+            <a th:href="@{/projects}">一覧画面</a>
+            <a href="#">ログアウト</a>
+        </nav>
+    </header>
+    <div class="layout">
+        <form th:action="@{/books/search/result}" method="get">
+            <input type="text" name="keyword" placeholder="キーワード入力">
+            <button type="submit">検索</button>
+        </form>
+        <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
+        <p th:if="${message}" th:text="${message}"></p>
+
+        <p th:if="${keyword}">
+            検索キーワード：<span th:text="${keyword}"></span>
+        </p>
+
+        <div th:if="${books != null}">
+            <p th:text="'検索結果件数：' + ${#lists.size(books)}"></p>
+        </div>
+
+        <div th:each="book : ${books}">
+            <p th:text="${book.title}"></p>
+            <p th:text="${book.author}"></p>
+            <img th:if="${book.thumbnail}" th:src="${book.thumbnail}" width="100">
+            <hr>
+        </div>    
+    </div>
+</body>
+</html>
