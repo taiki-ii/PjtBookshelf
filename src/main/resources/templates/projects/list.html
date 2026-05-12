@@ -62,6 +62,7 @@
                 <th>ステータス</th>
                 <th>操作</th>
                 <th>管理画面</th>
+                <th>削除</th>
             </tr>
         </thead>
         <tbody>
@@ -76,10 +77,15 @@
                     </form>
                 </td>
                 <td>
-					<form th:action="@{/projects/{projectId}/workspace(projectId=${project.id})}" method="get">
-						<button type="submit">管理画面</button>
-					</form>
-				</td>
+                    <form th:action="@{/projects/{projectId}/workspace(projectId=${project.id})}" method="get">
+                        <button type="submit">管理画面</button>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/projects/{projectId}/delete(projectId=${project.id})}" method="post" onsubmit="return confirm('登録した本、メモはすべて削除されますがよろしいですか？');">
+                        <button type="submit">削除</button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>
