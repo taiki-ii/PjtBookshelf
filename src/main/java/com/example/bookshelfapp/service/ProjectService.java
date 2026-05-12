@@ -73,4 +73,11 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
+    @Transactional
+    public void deleteProject(Integer projectId) {
+        Project project = projectRepository.findById(projectId)
+            .orElseThrow(() -> new IllegalArgumentException("指定したプロジェクトが存在しません。 id=" + projectId));
+        projectRepository.delete(project);
+    }
+
 }

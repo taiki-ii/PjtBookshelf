@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -103,5 +104,15 @@ public class ProjectController {
         projectService.updateProject(projectEditForm);
         return "redirect:/projects";
     }
+
+    /**
+     * プロジェクト削除
+     * 
+     */
+	@PostMapping("/projects/{projectId}/delete")
+	public String deleteProject(@PathVariable("projectId") Integer projectId) {
+		projectService.deleteProject(projectId);
+		return "redirect:/projects";
+	}
 
 }
